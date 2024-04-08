@@ -32,15 +32,9 @@ Yes! There is a budding community of engineers dissatisfied with the current dee
 
 ## Official Links
 
-- [Sign up to the playground waitlist](https://www.modular.com/get-started)
 - [Read the FAQ](https://docs.modular.com/mojo/faq.html)
 - [Check out the docs](https://docs.modular.com/mojo/programming-manual.html)
 - [Check out the GitHub](https://github.com/modularml/mojo)
 - [Join the Discord](https://www.discord.gg/modular)
-
-## Unofficial Links
-
-- [This week in Mojo](/this_week_in_mojo/)
-- [Mojo team answers](/mojo_team_answers.html)
 
 <CommentService />
