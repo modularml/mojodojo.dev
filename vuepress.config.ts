@@ -108,7 +108,7 @@ export default defineUserConfig({
         }),
         commentPlugin({
             provider: "Giscus",
-            repo: "mojodojodev/mojodojo.dev",
+            repo: "modularml/mojodojo.dev",
             repoId: "R_kgDOJfLZPA",
             category: "Comments",
             categoryId: "DIC_kwDOJfLZPM4CXrxB",

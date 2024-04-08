@@ -24,7 +24,7 @@ For a path to becoming a proficient AI/ML developer who'll be able to take advan
 
 ## I want to build a product using Mojo
 
-Not yet, Mojo is still only available via an online Jupyter notebook in an interactive playground to experiment with the language, but if you want to get a head start on understanding the language check out the links below.
+Mojo is still unstable and has regular breaking changes, so only if you're comfortable being on the bleeding edge and fixing breaking changes each release.
 
 ## I'm an experienced engineer curious about Mojo
 
