@@ -17,6 +17,7 @@ const compareDate = (dateA, dateB) => {
 
 
 export default defineUserConfig({
+    base: "/mojodojo.dev/",
     bundler: viteBundler(),
     extendsBundlerOptions: (config, app) => {
         // addViteSsrNoExternal(config, app, 'vuepress-shared');
