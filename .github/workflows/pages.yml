@@ -28,14 +28,13 @@ jobs:
 
       - run: npm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+       - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v4
         with:
-          path: '.vuepress/dist'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@main
+          # deploy to gh-pages branch
+          target_branch: gh-pages
+          # deploy the default output dir of VuePress
+          build_dir: docs/.vuepress/dist
+        env:
+          # @see https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
