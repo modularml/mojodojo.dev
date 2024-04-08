@@ -64,8 +64,6 @@ py.print("this uses the python print keyword")
 this uses the python print keyword
 ```
 
-this uses the python print keyword
-
 
 We can now use the `type` builtin from Python to see what the dynamic type of `x` is:
 
@@ -118,7 +116,7 @@ On the stack the simplified representation of `x` would look like this:
 
 In Python we can change the type dynamically:
 
-```mojo
+```python
 x = "mojo"
 ```
 
@@ -385,8 +383,6 @@ word_str
 NO
 ```
 
-t
-
 There is also a `StringLiteral` type, it's written directly into the binary, when the program starts it's loaded into `read-only` memory, which means it's constant and lives for the duration of the program:
 
 ```mojo
@@ -414,12 +410,6 @@ print(literal)
     literal = 20
               ^~
 ```
-
-error: Expression [26]:26:11: cannot implicitly convert 'Int' value to 'StringLiteral' in assignment
-        lit = 20
-              ^~
-    
-
 
 One thing to be aware of is that an emoji is actually four bytes, so we need a slice of 4 to have it print correctly:
 
@@ -595,9 +585,6 @@ return_error()
 ```plaintext
 Unhandled exception caught during execution: This returns an Error type
 ```
-
-Error: This returns an Error type
-
 
 ## Exercises
 1. Use the Python interpreter to calculate 2 to the power of 8 in a `PythonObject` and print it
