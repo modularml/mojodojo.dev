@@ -35,7 +35,7 @@ export default defineUserConfig({
         logo: '/hero.png',
         repo: 'modularml/mojodojo.dev',
         repoLabel: 'GitHub',
-        docsRepo: 'mojodojodev/mojodojo.dev',
+        docsRepo: 'modularml/mojodojo.dev',
         docsBranch: 'main',
         lastUpdated: false,
         locales: {
