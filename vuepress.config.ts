@@ -17,7 +17,7 @@ const compareDate = (dateA, dateB) => {
 
 
 export default defineUserConfig({
-
+    base: "/mojodojo.dev/",
     bundler: viteBundler(),
     extendsBundlerOptions: (config, app) => {
         // addViteSsrNoExternal(config, app, 'vuepress-shared');
@@ -34,7 +34,7 @@ export default defineUserConfig({
     theme: defaultTheme({
         colorMode: 'dark',
         logo: '/hero.png',
-        repo: 'mojodojodev/mojodojo.dev',
+        repo: 'modularml/mojodojo.dev',
         repoLabel: 'GitHub',
         docsRepo: 'mojodojodev/mojodojo.dev',
         docsBranch: 'main',
