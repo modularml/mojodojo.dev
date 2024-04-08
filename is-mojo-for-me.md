@@ -8,10 +8,12 @@ head:
 ---
 
 # Is Mojo for me?
-## I'm a beginner programmer
-Mojo is not aimed towards beginners, Python is a great choice for a first language and dominates fields like data science and Deep Learning (DL), which is the field responsible for rapid advancements in AI/ML such as Stable Diffusion and ChatGPT.
 
-Mojo is a language focused on addressing the main limitation of Python, which is the lack of low-level control to optimize performance, a problem that doesn't concern beginner programmers.
+## I'm a beginner programmer
+
+Mojo is not yet aimed towards beginners. Lower level features to optimize performance have been prioritized to build MAX. Better interop with Python and higher level features that Python programmers are familiar with will come later.
+
+Python is a great choice for a first language and dominates fields like data science and Deep Learning (DL), which is the field responsible for rapid advancements in AI/ML such as Stable Diffusion and ChatGPT.
 
 For a path to becoming a proficient AI/ML developer who'll be able to take advantage of Mojo when it's released, I can recommend this syllabus for someone new to programming:
 
@@ -21,12 +23,15 @@ For a path to becoming a proficient AI/ML developer who'll be able to take advan
 - [Python 3 Deep Dive](https://www.udemy.com/course/python-3-deep-dive-part-1/): Circle back to the advanced features and implementation details of Python.
 
 ## I want to build a product using Mojo
+
 Not yet, Mojo is still only available via an online Jupyter notebook in an interactive playground to experiment with the language, but if you want to get a head start on understanding the language check out the links below.
 
 ## I'm an experienced engineer curious about Mojo
+
 Yes! There is a budding community of engineers dissatisfied with the current deep learning ecosystem, check the links below and help contribute to the early stages of a very promising language.
 
 ## Official Links
+
 - [Sign up to the playground waitlist](https://www.modular.com/get-started)
 - [Read the FAQ](https://docs.modular.com/mojo/faq.html)
 - [Check out the docs](https://docs.modular.com/mojo/programming-manual.html)
@@ -34,6 +39,7 @@ Yes! There is a budding community of engineers dissatisfied with the current dee
 - [Join the Discord](https://www.discord.gg/modular)
 
 ## Unofficial Links
+
 - [This week in Mojo](/this_week_in_mojo/)
 - [Mojo team answers](/mojo_team_answers.html)
 

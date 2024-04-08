@@ -13,6 +13,8 @@ head:
   - [meta, { name: twitter:image , content: "https://mojodojo.dev/hero.png" }]
 ---
 
+_I wrote this blog before I started working at Modular, these views are not representative of Modular_
+
 # Rust or Mojo for the future of AI?
 ## Intro
 There has been dissatisfaction with the combination of C/C++ and Python for putting ML models into production, debugging problems when something goes wrong can be a nightmarish task. Ideally we could have one language that allows systems programmers to squeeze our hardware to the limits of physics, while also being suitable as a safe high level language to make putting code into production easy, reliable and performant. Rust fits that space well despite having a steep learning curve, and it's starting to be noticed in the industry as a potential solution.
@@ -36,73 +38,60 @@ We'll be taking a png of a fire emoji, manually implementing a box blur in pytho
 
 In Mojo we can use any library from the entire Python ecosystem, so we'll use opencv to get our images into a numpy array and matplotlib to render them:
 
-
-```mojo
-%%python
+```python
 import cv2
 import numpy as np
 from matplotlib import colors, pyplot as plt
 from timeit import timeit
 
-def render(img):
-    plt.figure(figsize=(2, 2))
-    plt.axis("off")
-    plt.imshow(img)
-    plt.show()
+def write_img(path, img):
+    cv2.imwrite(path, img)
 
-def open(img):
+def open_img(img):
     img = cv2.imread(img).astype(np.uint8)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2RGBA)
     return img
 ```
 
-In the Mojo playground, `%%python` represents a cell that runs through the Python interpreter, but we can still access that code from inside Mojo cells, for example:
+There is a image in the same folder as this notebook named `fire.png`:
 
+<img src="./fire.png?version=93" alt="drawing" width="200"/>
+
+Using [md-notebook](https://marketplace.visualstudio.com/items?itemName=jackos.md-notebook) you can access all the previous Python cells from Mojo using the `py` module:
 
 ```mojo
-img = open("fire.png")
-render(img)
+img = py.open_img("fire.png")
+# Convert from RGB to BGR to color flame blue
+img = py.cv2.cvtColor(img, py.cv2.COLOR_RGBA2BGRA)
+py.write_img("blue-fire.png", img)
 ```
 
+<img src="./blue-fire.png?version=111" alt="drawing" width="200"/>
 
-    
-![png](/2023-07-17-rust-or-mojo-ai_3_0.png)
-    
-
-
-    
-
-
-When using opencv from python, instead of a `Mat` like in C++ we get back the ultra-ergonomic numpy array, for example printing out the RGBA of the first pixel (all white):
-
-
-```mojo
-%%python
-img = open("fire.png")
+```python
+img = open_img("fire.png")
 print(img[0, 0, 0:4])
 ```
 
-    [255 255 255 255]
-
+```text
+[255 255 255 255]
+```
 
 The format is: [Red, Green, Blue, Alpha] represented by 8bit unsigned integers.
 
 Or a middle pixel with some color:
 
-
-```mojo
-%%python
+```python
 print(img[120, 120, 0:4])
 ```
 
-    [253 162  54 255]
-
+```text
+[ 27 161 252 255]
+```
 
 Let's try applying a blur using python first:
 
-
-```mojo
-%%python
+```python
 def box_blur(image, diameter):
     blurred_image = np.copy(image)
     height, width, _ = image.shape
@@ -121,76 +110,60 @@ def box_blur(image, diameter):
     return blurred_image
 
 blurred = box_blur(img, 8)
-render(blurred)
+write_img("blurred.jpg", blurred)
 ```
 
-
-    
-![png](/2023-07-17-rust-or-mojo-ai_9_0.png)
-    
-
+<img src="./blurred.jpg" width=200> 
 
     
 
 
-This is obviously going to be a very slow operation in Python compared to what you can do in a language like C. Let's time how long it takes in the Mojo Playground:
+This is obviously going to be a very slow operation in Python compared to what you can do in a language like C, let's time how long it takes:
 
-
-```mojo
-%%python
-img = open("fire.png")
+```python
+img = open_img("fire.png")
 python_secs = timeit(lambda: box_blur(img, 8), number = 5) / 5
 print(python_secs)
 ```
 
-    0.6462432577274739
-
+```text
+0.21889668439980597
+```
 
 The opencv version of the operation uses C++ and one of a few hardware APIs depending on how it was compiled, taking advantage of vectorization. First lets take a look at the result to make sure it's doing the same thing:
 
-
-```mojo
-%%python
-img = open("fire.png")
+```python
+img = open_img("fire.png")
 img = cv2.filter2D(img, -1, np.ones((8, 8))/64)
-render(img)
+write_img("filter2D.jpg", img)
 ```
 
+<img src="./filter2D.jpg?version=4" width=200>
 
-    
-![png](/2023-07-17-rust-or-mojo-ai_13_0.png)
-    
-
-
-    
-
-
-And now we can time it:
-
-
-```mojo
-%%python
-img = open("fire.png")
+```python
+img = open_img("fire.png")
 opencv_secs = timeit(lambda: cv2.filter2D(img, -1, np.ones((8, 8), np.uint8)/64), number=5) / 5
 print("Seconds:", opencv_secs)
 ```
 
-    Seconds: 0.0014652336016297341
+```text
+Seconds: 0.0006133885999588529
+```
 
+That's giving us a very nice speedup over the Python version using C++:
 
-That's giving us a nice speedup of around 400x over the Python version:
-
-
-```mojo
+```python
 print("Speedup:", python_secs / opencv_secs)
 ```
 
-    Speedup: 441.05134977021925
-
+```text
+Speedup: 305.831956407965
+```
 
 Going to the definition of `filter2D` we find the below code. The `...` means the C++ functions have default values; these are just for type hints in Python. The overload with `UMat` is for when you're using the GPU version of opencv:
 
-```mojo
+```python
+# md-notebook:skip
 @typing.overload
 def filter2D(src: cv2.typing.MatLike, ddepth: int, kernel: cv2.typing.MatLike, dst: cv2.typing.MatLike | None = ..., anchor: cv2.typing.Point = ..., delta: float = ..., borderType: int = ...) -> cv2.typing.MatLike: ...
 @typing.overload
@@ -220,15 +193,11 @@ The standard library is still being built up for Mojo, so sometimes we need to u
 
 There is nothing in the standard library yet for converting a Python integer representing an address to a Mojo pointer with a given data type, so for now we need to write our own function:
 
-
 ```mojo
-from DType import DType
-from Pointer import DTypePointer
-
 fn numpy_data_pointer(numpy_array: PythonObject) raises -> DTypePointer[DType.uint32]:
     return DTypePointer[DType.uint32](
                 __mlir_op.`pop.index_to_pointer`[
-                    _type:__mlir_type.`!pop.pointer<scalar<ui32>>>`
+                    _type=__mlir_type.`!kgen.pointer<scalar<ui32>>`
                 ](
                     SIMD[DType.index,1](numpy_array.__array_interface__['data'][0].__index__()).value
                 )
@@ -239,8 +208,10 @@ fn numpy_data_pointer(numpy_array: PythonObject) raises -> DTypePointer[DType.ui
 In the comments below, an AI compiler engineer working on Mojo suggests they'll add a static `from_address` method to make this a lot more simple:
 
 ```mojo
+# md-notebook:skip
 let p = DTypePointer[DType.uint32].from_address(arr.__array_interface__['data'][0])
 ```
+
 :::
 
 You can see `pop` is an MLIR dialect the Modular team have developed; it's not intended for normal programmers to need to understand this syntax, and over time useful things will be wrapped in a nice API by compiler engineers for systems engineers and Python programmers to use at a higher level. But you still have the power to define your own dialects or use one of the many already defined in the MLIR ecosystem, which makes it easy for vendors to accelerate their hardware, for example you can take a look at the [gpu dialect](https://mlir.llvm.org/docs/Dialects/GPU/) here. This enables compiler engineers to write optimizations for different hardware as it becomes more exotic for AI acceleration, and Mojo developers will be able to take full advantage.
@@ -248,57 +219,69 @@ You can see `pop` is an MLIR dialect the Modular team have developed; it's not i
 Lets go line by line to explain what's happening:
 
 ```mojo
+# md-notebook:skip
 fn numpy_array_pointer(numpy_array: PythonObject) raises -> DTypePointer[DType.uint32]:
 ```
 
 `PythonObject` has the same representation in Mojo as it does in Python, see [Intro to Mojo: Basic Types](/guides/intro-to-mojo/basic-types.html) for more details. `raises` means that an error could occur which is always the case when interacting with Python. Here I'm returning a Pointer to a DType of `uint32` so each element represents the RGBA of a single pixel.
 
 ```mojo
+# md-notebook:skip
 __mlir_op.`pop.index_to_pointer`[
 ```
 
 This is the operation to convert from an index which is an integer of size that matches your architecture, for example 64bit on an x86-64 machine, to an address that can be used as a pointer.
 
 ```mojo
+# md-notebook:skip
 _type:__mlir_type.`!pop.pointer<scalar<ui32>>>`
 ```
 
 This is the type as represented in MLIR, it's 32bits so each element encompasses 4*8bit color channels representing RGBA.
 
 ```mojo
+# md-notebook:skip
 SIMD[DType.index,1](numpy_array.__array_interface__['data'][0].__index__()).value
 ```
+
 Let's split the above into three separate parts:
 
 ```mojo
+# md-notebook:skip
 numpy_array.__array_interface__['data'][0]
 ```
+
 This is using the Python interpreter to get back the address of where the raw data of the numpy array starts in memory.
 
-```
+```mojo
+# md-notebook:skip
 .__index__()
 ```
+
 This converts it from a PythonObject to a Mojo `Int`
-```
+
+```mojo
+# md-notebook:skip
 SIMD[DType.index,1](...).value
 ```
+
 This gets us back a raw MLIR `scalar<index>` type which can then be converted to a `pointer<scalar<ui32>>>` type via the MLIR operation.
 
-```
+```mojo
+# md-notebook:skip
 return DTypePointer[DType.uint32](...)
 ```
+
 Finally it's returned as the desired type, which is a Mojo pointer starting at the address in memory where the raw data of the numpy array starts.
 
 ## Writing the Box Blur in Mojo
 
 Below we're taking advantage of Mojo's builtin SIMD type, we figure out how many 32bit pixels we can operate on at once in the hardwares SIMD register, then for each pixel we accumulate the RGB values in a box around it and apply the average to give the blur effect. For example if our SIMD register is 512bits we can operate on 16 32bit pixels at once:
 
-
 ```mojo
-from TargetInfo import simdwidthof
-from Memory import memcpy
-from Time import now
-from Math import clamp
+from memory import memcpy
+from time import now
+from math import clamp
 
 fn box_blur_mojo[diameter: Int](image: PythonObject) raises:
     # Get number of elements that fit into your hardwares SIMD register
@@ -307,13 +290,13 @@ fn box_blur_mojo[diameter: Int](image: PythonObject) raises:
     alias pixels = diameter ** 2
     alias radius = diameter // 2
     # Use the function we defined earlier to point to the numpy arrays raw data
-    let p = numpy_data_pointer(image)
+    var p = numpy_data_pointer(image)
     # Get the numpy dimensions from the Python iterpreter and convert them to Mojo ints
-    let height = image.shape[0].__index__()
-    let width = image.shape[1].__index__()
-    let el = width * height
+    var height = image.shape[0].__index__()
+    var width = image.shape[1].__index__()
+    var el = width * height
     # Because we don't want blurred pixels influencing the outcome of the next pixel, we allocate a new array
-    let tmp = DTypePointer[DType.uint32].alloc(el)
+    var tmp = DTypePointer[DType.uint32].alloc(el)
 
     for y in range(0, height):
         # Step over the amount of elements we'll operate on at the same time with SIMD
@@ -326,10 +309,10 @@ fn box_blur_mojo[diameter: Int](image: PythonObject) raises:
             for ky in range(-radius, radius):
                 for kx in range(-radius, radius):
                     # Make sure to not go out of bounds
-                    let iy = clamp(Int64(y) + ky, 0, height-1)
-                    let ix = clamp(Int64(x) + kx, 0, width-1)
+                    var iy = clamp(Int64(y) + ky, 0, height-1)
+                    var ix = clamp(Int64(x) + kx, 0, width-1)
                     # Grab the amount of 32bit RGBA pixels that can fit into your hardwares SIMD register
-                    let rgb = p.simd_load[simd_width](iy.to_int() * width + ix.to_int())
+                    var rgb = p.load[width=simd_width](iy.to_int() * width + ix.to_int())
                     # and seperate out the RGB components using bit shifts and masking, adding the values to the sums
                     sum_r += rgb & SIMD[DType.uint32, simd_width](255)
                     sum_g += rgb >> 8 & SIMD[DType.uint32, simd_width](255)
@@ -337,22 +320,19 @@ fn box_blur_mojo[diameter: Int](image: PythonObject) raises:
 
             # Combine 8bit color channels back into 32bit pixel (last channel is alpha 255 for no transparency)
             # And divide by total pixels in the box to get the average colors
-            let combined = (sum_r / pixels) | (sum_g / pixels << 8) | (sum_b / pixels << 16) |  (255 << 24)
+            var combined = (sum_r / pixels) | (sum_g / pixels << 8) | (sum_b / pixels << 16) |  (255 << 24)
             # Store all the pixels at once (16 on a 512bit SIMD register)
-            tmp.simd_store(y * width + x, combined)
+            tmp.store(y * width + x, combined)
     # Copy the data from the temporay image to the original numpy array
     memcpy(p, tmp, el)
     tmp.free()
 
-var image = open("fire.png")
+var image = py.open_img("fire.png")
 box_blur_mojo[8](image)
-render(image)
+py.write_img("mojo-blur.png", image)
 ```
 
-
-    
-![png](/2023-07-17-rust-or-mojo-ai_24_0.png)
-    
+<img src="./mojo-blur.png" width=200> 
 
 
     
@@ -361,19 +341,18 @@ render(image)
 ## Vectorize
 You may have noticed a bug: if the image width isn't a multiple of our SIMD register, we'll have some leftover pixels that don't get blurred. Mojo includes a vectorize function because it's such a common requirement to load chunks of data that fit into the SIMD register, and it accounts for any leftovers without us having to calculate that ourselves:
 
-
 ```mojo
-from Functional import vectorize
+from algorithm import vectorize
 
-fn box_blur_mojo[diameter: Int](image: PythonObject) raises:
+fn box_blur_vectorize_mojo[diameter: Int](image: PythonObject) raises:
     alias simd_width = simdwidthof[DType.uint32]()
     alias pixels = diameter ** 2
     alias radius = diameter // 2
-    let p = numpy_data_pointer(image)
-    let height = image.shape[0].__index__()
-    let width = image.shape[1].__index__()
-    let el = width * height
-    let tmp = DTypePointer[DType.uint32].alloc(el)
+    var p = numpy_data_pointer(image)
+    var height = image.shape[0].__index__()
+    var width = image.shape[1].__index__()
+    var el = width * height
+    var tmp = DTypePointer[DType.uint32].alloc(el)
 
     for y in range(0, height):
         # This inner loop is vectorized by stepping over simd_width pixels (16 32bit pixels on a 512bit SIMD register) 
@@ -385,43 +364,43 @@ fn box_blur_mojo[diameter: Int](image: PythonObject) raises:
             var sum_b = sum_r
             for ky in range(-radius, radius):
                 for kx in range(-radius, radius):
-                    let iy = clamp(Int64(y) + ky, 0, height-1)
-                    let ix = clamp(Int64(x) + kx, 0, width-1)
-                    let rgb = p.simd_load[simd_width](iy.to_int() * width + ix.to_int())
+                    var iy = clamp(Int64(y) + ky, 0, height-1)
+                    var ix = clamp(Int64(x) + kx, 0, width-1)
+                    var rgb = p.load[width=simd_width](iy.to_int() * width + ix.to_int())
                     sum_r += rgb & 255
                     sum_g += rgb >> 8 & 255
                     sum_b += rgb >> 16 & 255
-            let combined = (sum_r / pixels) | (sum_g / pixels << 8) | (sum_b / pixels << 16) |  (255 << 24)
-            tmp.simd_store(y * width + x, combined)
+            var combined = (sum_r / pixels) | (sum_g / pixels << 8) | (sum_b / pixels << 16) |  (255 << 24)
+            tmp.store(y * width + x, combined)
         # Run the vectorized inner loop
-        vectorize[simd_width, inner](width)
+        vectorize[inner, simd_width](width)
     memcpy(p, tmp, el)
     tmp.free()
 ```
 
 Now we can use a similar benchmark function as Python to take the average of 5 iterations:
 
-
 ```mojo
-var image = open("fire.png")
+image = py.open_img("fire.png")
 
 var nanos = 0.0
-let its = 5
+var its = 5
 for _ in range(its):
-    let tick = now()
+    var tick = now()
     box_blur_mojo[8](image)
     nanos += (now() - tick)
 mojo_secs = nanos / its / 1e9
 
 print("total time:", mojo_secs)
-print("python speedup:", python_secs / mojo_secs)
-print("opencv speedup:", opencv_secs / mojo_secs)
+print("python speedup:", py.python_secs / mojo_secs)
+print("opencv speedup:", py.opencv_secs / mojo_secs)
 ```
 
-    total time: 0.00046445619999999999
-    python speedup: 1391.3976338941625
-    opencv speedup: 3.15472934074243
-
+```text
+total time: 0.00032285000000000001
+python speedup: 663.2885296575425
+opencv speedup: 1.8979340248172347
+```
 
 We just replaced tens of thousands of lines of incredibly hard-to-understand C++ code, accounting for all the different hardware API's that opencv supports, and still managed to get a 3x performance improvement. This can be further improved by splitting rows and running on separate cores, but this didn't result in faster performance on my playground instance as the CPU is shared with other users, stay tuned for updates once the local compiler is released.
 

@@ -1,6 +1,6 @@
 ---
 title: "Basic Types"
-categories: "02: Basic Types"
+categories: "01: Basic Types"
 usage: "Get started with Mojo basic types and how to interact with Python"
 head:
   - [meta, { name: twitter:card , content: summary }]
@@ -16,30 +16,29 @@ _This guide is in the early stages, feedback welcomed [on Github](https://github
 ## PythonObject
 Let's start by running code through the Python interpreter from Mojo to get a [PythonObject](https://docs.modular.com/mojo/MojoPython/PythonObject.html) back:
 
-
 ```mojo
+from python import Python
+
 x = Python.evaluate('5 + 10')
 print(x)
 ```
 
-    15
-
+```text
+15
+```
 
 `x` is represented in memory the same way as if we ran this in Python:
 
-
-```mojo
-%%python
+```python
 x = 5 + 10
 print(x)
 ```
 
-    15
+```text
+15
+```
 
-
-_in the Mojo playground, using `%%python` at the top of a cell will run code through Python instead of Mojo_
-
-`x` is actually a pointer to `heap` allocated memory.
+In Python, `x` is actually a pointer to `heap` allocated memory.
 
 ::: tip CS Fundamentals
 `stack` and `heap` memory are really important concepts to understand, [this YouTube video](https://www.youtube.com/watch?v=_8-ht2AKyH4) does a fantastic job of explaining it visually. 
@@ -55,43 +54,45 @@ These concepts will make more sense over time
 
 You can access all the Python keywords by importing `builtins`:
 
-
 ```mojo
-let py = Python.import_module("builtins")
+py = Python.import_module("builtins")
 
 py.print("this uses the python print keyword")
 ```
 
-    this uses the python print keyword
+```text
+this uses the python print keyword
+```
+
+this uses the python print keyword
 
 
 We can now use the `type` builtin from Python to see what the dynamic type of `x` is:
-
 
 ```mojo
 py.print(py.type(x))
 ```
 
-    <class 'int'>
-
+```text
+<class 'int'>
+```
 
 We can read the address that is stored in `x` on the `stack` using the Python builtin `id`
-
 
 ```mojo
 py.print(py.id(x))
 ```
 
-    139732464847136
-
+```text
+127017920909896
+```
 
 This is pointing to a C object in Python, and Mojo behaves the same when using a `PythonObject`, accessing the value actually uses the address to lookup the data on the `heap` which comes with a performance cost. 
 
 This is a simplified representation of how the `C Object` being pointed to would look if it were a Python dict:
 
-
-```mojo
-%%python
+```python
+# md-notebook:skip
 heap = {
     44601345678945: {
         "type": "int",
@@ -106,9 +107,8 @@ heap = {
 
 On the stack the simplified representation of `x` would look like this:
 
-
-```mojo
-%%python
+```python
+# md-notebook:skip
 [
     { "frame": "main", "variables": { "x": 44601345678945 } }
 ]
@@ -118,16 +118,14 @@ On the stack the simplified representation of `x` would look like this:
 
 In Python we can change the type dynamically:
 
-
 ```mojo
 x = "mojo"
 ```
 
 The object in C will change its representation:
 
-
-```mojo
-%%python
+```python
+# md-notebook:skip
 heap = {
     44601345678945 : {
         "type": "string",
@@ -155,14 +153,14 @@ In Mojo we can remove all that overhead:
 
 ## Mojo 🔥
 
-
 ```mojo
 x = 5 + 10
 print(x)
 ```
 
-    15
-
+```text
+15
+```
 
 We've just unlocked our first Mojo optimization! Instead of looking up an object on the heap via an address, `x` is now just a value on the stack with 64 bits that can be passed through registers.
 
@@ -180,16 +178,14 @@ That last one is very important in today's world, let's see how Mojo gives us th
 
 SIMD stands for `Single Instruction, Multiple Data`, hardware now contains special registers that allow you do the same operation across a vector in a single instruction, greatly improving performance, let's take a look:
 
-
 ```mojo
-from DType import DType
-
 y = SIMD[DType.uint8, 4](1, 2, 3, 4)
 print(y)
 ```
 
-    [1, 2, 3, 4]
-
+```text
+[1, 2, 3, 4]
+```
 
 In the definition `[DType.uint8, 4]` are known as `parameters` which means they must be compile-time known, while `(1, 2, 3, 4)` are the `arguments` which can be compile-time or runtime known. 
 
@@ -199,14 +195,14 @@ In other languages `argument` and `parameter` often mean the same thing, in Mojo
 
 This is now a vector of 8 bit numbers that are packed into 32 bits, we can perform a single instruction across all of it instead of 4 separate instructions:
 
-
 ```mojo
 y *= 10
 print(y)
 ```
 
-    [10, 20, 30, 40]
-
+```text
+[10, 20, 30, 40]
+```
 
 ::: tip CS Fundamentals
 Binary is how your computer stores memory, with each bit representing a `0` or `1`. Memory is typically `byte` addressable, meaning that each unique memory address points to one `byte`, which consists of 8 `bits`.
@@ -227,51 +223,51 @@ We're packing the data together with SIMD on the `stack` so it can be passed int
 
 `00000001` `00000010` `00000011` `00000100`
 
-The SIMD register in modern CPU's is huge, let's see how big it is in the Mojo playground:
-
+The SIMD registers in modern CPU's are huge, lets see how big it is on this computer:
 
 ```mojo
-from TargetInfo import simdbitwidth
+from sys.info import simdbitwidth
 print(simdbitwidth())
 ```
 
-    512
+```text
+256
+```
 
-
-That means we could pack 64 x 8bit numbers together and perform a calculation on all of it with a single instruction.
+That means we could pack 32 x 8bit numbers together and perform a calculation on all of it with a single instruction.
 
 You can also initialize SIMD with a single argument:
-
 
 ```mojo
 z = SIMD[DType.uint8, 4](1)
 print(z)
 ```
 
-    [1, 1, 1, 1]
-
+```text
+[1, 1, 1, 1]
+```
 
 ## Scalars
 
 Scalar just means a single value, you'll notice in Mojo all the numerics are SIMD scalars:
 
-
 ```mojo
+# md-notebook:skip
 var x = UInt8(1)
 x = "will cause an error"
 ```
 
-    error: Expression [14]:20:9: cannot implicitly convert 'StringLiteral' value to 'SIMD[ui8, 1]' in assignment
-        x = "will cause an error"
-            ^~~~~~~~~~~~~~~~~~~~~
-    
+```plaintext
+/tmp/md-notebook/main.mojo:48:5: error: invalid redefinition of 'x'
+    var x = UInt8(1)
+    ^
+/tmp/md-notebook/main.mojo:11:5: note: previous definition here
+    x = Python.evaluate('5 + 10')
+    ^
+```
 
+`UInt8` is just an `alias` for `SIMD[DType.uint8, 1]`, you can see all the [numeric SIMD types imported by default here](https://docs.modular.com/mojo/stdlib/builtin/simd):
 
-`UInt8` is just an `alias` for `SIMD[DType.uint8, 1]`, you can see all the [numeric SIMD types imported by default here](https://docs.modular.com/mojo/MojoStdlib/SIMD.html):
-
-- Float16
-- Float32
-- Float64
 - Int8
 - Int16
 - Int32
@@ -280,11 +276,14 @@ x = "will cause an error"
 - UInt16
 - UInt32
 - UInt64
+- Float16
+- BFloat16
+- Float32
+- Float64
 
 Also notice when we try and change the type it throws an error, this is because Mojo is `strongly typed`
 
 If we use existing Python modules, it will give us back a `PythonObject` that behaves the same `loosely typed` way as it does in Python:
-
 
 ```mojo
 np = Python.import_module("numpy")
@@ -295,145 +294,128 @@ arr = "this will work fine"
 print(arr)
 ```
 
-    [0.   0.25 0.5  0.75 1.  ]
-    this will work fine
-
+```text
+[4.90821123e-310 0.00000000e+000 5.61870786e-310 3.37446836e-321
+ 2.37151510e-322]
+this will work fine
+```
 
 ## Strings
-In Mojo the heap allocated `String` isn't imported by default:
-
+In Mojo `String` is heap allocated:
 
 ```mojo
-from String import String
-
 s = String("Mojo🔥")
 print(s)
 ```
 
-    Mojo🔥
+```text
+Mojo🔥
+```
 
-
-`String` is actually a pointer to `heap` allocated data, this means we can load a huge amount of data into it, and change the size of the data dynamically during runtime.
+`String` is contains a pointer to `heap` allocated data, this means we can load a huge amount of data into it limited only by your free RAM, and change the size of the data dynamically during runtime.
 
 Let's cause a type error so you can see the data type underlying the String:
 
-
 ```mojo
-x = s.buffer
+# md-notebook:skip
+var x = s._buffer
 x = 20
 ```
 
-    error: Expression [17]:22:10: cannot implicitly convert 'DynamicVector[SIMD[si8, 1]]' value to 'PythonObject' in assignment
-        x = s.buffer
-            ~^~~~~~~
-    
-
-
-`DynamicVector` is similar to a Python list, here it's storing multiple `int8`'s that represent the characters, let's print the first character:
-
-
-```mojo
-print(s[0])
+```plaintext
+/tmp/md-notebook/main.mojo:61:10: error: cannot implicitly convert 'List[SIMD[si8, 1]]' value to 'PythonObject' in assignment
+    x = s._buffer
+        ~^~~~~~~~
 ```
 
-    M
+`List` is similar to a Python List, here it's storing multiple `int8`'s that represent the characters, let's print the first character:
 
+```mojo
+s[0]
+```
+
+```text
+M
+```
 
 Now lets take a look at the decimal representation:
 
-
 ```mojo
-from String import ord
+from builtin.string import ord
 
-print(ord(s[0]))
+decimal = ord(s[0])
+decimal
 ```
 
-    77
-
+```text
+77
+```
 
 That's the ASCII code [shown in this table](https://www.ascii-code.com/)
 
 We can build our own string this way, we can put in 78 which is N and 79 which is O
 
-
 ```mojo
-from Vector import DynamicVector
+var word = List[Int8]()
 
-let vec = DynamicVector[Int8](2)
-
-vec.push_back(78)
-vec.push_back(79)
+word.append(78)
+word.append(79)
+word.append(0) # Must null terminate the String
 ```
 
-We can use a `StringRef` to get a pointer to the same location in memory, but with the methods required to output the numbers as text:
-
-
-```mojo
-from Pointer import DTypePointer
-from DType import DType
-
-let vec_str_ref = StringRef(DTypePointer[DType.int8](vec.data).address, vec.size)
-print(vec_str_ref)
-```
-
-    NO
-
-
-Because it points to the same location in `heap` memory, changing the original vector will also change the value retrieved by the reference:
-
+We can use a `String` to copy the data to another location in memory, and it can now use the data as a String:
 
 ```mojo
-vec[1] = 78
-print(vec_str_ref)
+var word_str = String(word)
+word_str
 ```
 
-    NN
+```text
+NO
+```
 
-
-Create a `deep copy` of the String and allocate it to the heap:
-
+Because it points to a different location in `heap` memory, changing the original vector won't change the value retrieved by the reference:
 
 ```mojo
-from String import String
-let vec_str = String(vec_str_ref)
-
-print(vec_str)
+word[1] = 78
+word_str
 ```
 
-    NN
+```text
+NO
+```
 
+t
 
-Now we've made a copy of the data to a new location in `heap` memory, we can modify the original and it won't effect our copy:
-
+There is also a `StringLiteral` type, it's written directly into the binary, when the program starts it's loaded into `read-only` memory, which means it's constant and lives for the duration of the program:
 
 ```mojo
-vec[0] = 65
-vec[1] = 65
-print(vec_str)
+var literal = "This is my StringLiteral"
+print(literal)
 ```
 
-    NN
-
-
-The other string type is a `StringLiteral`, it's written directly into the binary, when the program starts it's loaded into `read-only` memory, which means it's constant and lives for the duration of the program:
-
-
-```mojo
-var lit = "This is my StringLiteral"
-print(lit)
+```text
+This is my StringLiteral
 ```
 
-    This is my StringLiteral
+This is my StringLiteral
 
 
 Force an error to see the type:
 
-
 ```mojo
-lit = 20
+# md-notebook:skip
+literal = 20
+print(literal)
 ```
 
-    error: Expression [26]:26:11: cannot implicitly convert 'Int' value to 'StringLiteral' in assignment
+```plaintext
+/tmp/md-notebook/main.mojo:92:15: error: cannot implicitly convert 'IntLiteral' value to 'StringLiteral' in assignment
+    literal = 20
+              ^~
+```
+
+error: Expression [26]:26:11: cannot implicitly convert 'Int' value to 'StringLiteral' in assignment
         lit = 20
               ^~
     
@@ -441,14 +423,18 @@ lit = 20
 
 One thing to be aware of is that an emoji is actually four bytes, so we need a slice of 4 to have it print correctly:
 
-
 ```mojo
 emoji = String("🔥😀")
 print("fire:", emoji[0:4])
 print("smiley:", emoji[4:8])
 ```
 
-    fire: 🔥
+```text
+fire: 🔥
+smiley: 😀
+```
+
+fire: 🔥
     smiley: 😀
 
 
@@ -460,85 +446,91 @@ These are all of the other builtin types not discussed which are accessible with
 ### Bool
 Standard Bool type
 
-
 ```mojo
-let bool: Bool = True
+var bool: Bool = True
 print(bool == False)
 ```
 
-    False
-
+```text
+False
+```
 
 ### Int
 Int is the same size as your architecture e.g. on a 64 bit machine it's 64 bits
 
-
 ```mojo
-let i: Int = 2 
+var i: Int = 2 
 print(i)
 ```
 
-    2
-
+```text
+2
+```
 
 It can also be used as an index:
 
-
 ```mojo
-var vec_2 = DynamicVector[Int]()
-vec_2.push_back(2)
-vec_2.push_back(4)
-vec_2.push_back(6)
+var list2 = List[Int]()
+list2.append(2)
+list2.append(4)
+list2.append(6)
 
-print(vec_2[i])
+print(list2[i])
 ```
 
-    6
-
+```text
+6
+```
 
 ### FloatLiteral
-
+Float literals can now be any size and are not limited to your CPU bit size:
 
 ```mojo
-let float: FloatLiteral = 3.3
+var float: FloatLiteral = 33244677779764631144466467797946.334646469
 print(float)
 ```
 
-    3.2999999999999998
-
-
+```text
+3.3244677779764633e+31
+```
 
 ```mojo
-let f32 = Float32(float)
+var f32 = Float32(float)
 print(f32)
 ```
 
-    3.2999999523162842
-
+```text
+3.3244676655471192e+31
+```
 
 ### ListLiteral
 
 When you initialize the list the types can be inferred, however when retrieving an item you need to provide the type as a `parameter`:
 
-
 ```mojo
-let list: ListLiteral[Int, FloatLiteral, StringLiteral] = [1, 5.0, "Mojo🔥"]
-print(list.get[2, StringLiteral]())
+var list = [1, "Mojo🔥"]
+var item1 = list.get[1, StringLiteral]()
+item1
 ```
 
-    Mojo🔥
+```text
+Mojo🔥
+```
+
+Mojo🔥
 
 
 ### Tuple
 
-
 ```mojo
-let tup = (1, "Mojo", 3)
-print(tup.get[0, Int]())
+var tup = (1, "Mojo", 3)
+var item2 = tup.get[2, Int]()
+item2
 ```
 
-    1
-
+```text
+3
+```
 
 ### Slice
 A slice follows the python convention of:
@@ -547,60 +539,64 @@ A slice follows the python convention of:
 
 So for example using Python syntax:
 
-
 ```mojo
-let original = String("MojoDojo")
-print(original[0:4])
+var original = String("MojoDojo")
+original[0:4]
 ```
 
-    Mojo
-
+```text
+Mojo
+```
 
 You can also represent as:
 
-
 ```mojo
-let slice_expression = slice(0, 4)
+var slice_expression = slice(0, 4)
 
-print(original[slice_expression])
+original[slice_expression]
 ```
 
-    Mojo
-
+```text
+Mojo
+```
 
 And to get every second letter:
 
-
 ```mojo
-print(original[0:4:2])
+original[0:4:2]
 ```
 
-    Mj
-
+```text
+Mj
+```
 
 Or:
 
-
 ```mojo
-let slice_expression = slice(0, 4, 2)
-print(original[slice_expression])
+var slice_expression2 = slice(0, 4, 2)
+original[slice_expression2]
 ```
 
-    Mj
-
+```text
+Mj
+```
 
 ### Error
 The error type is very simplistic, we'll go into more details on errors in a later chapter:
 
-
 ```mojo
+# md-notebook:skip
 def return_error():
     raise Error("This returns an Error type")
 
 return_error()
 ```
 
-    Error: This returns an Error type
+```plaintext
+Unhandled exception caught during execution: This returns an Error type
+```
+
+Error: This returns an Error type
 
 
 ## Exercises
@@ -625,43 +621,43 @@ for i in range(4):
 
 ### Exercise 1
 
-
 ```mojo
-let pow = Python.evaluate("2 ** 8") 
-print(pow)
+var pow = Python.evaluate("2 ** 8") 
+pow
 ```
 
-    256
-
+```text
+256
+```
 
 ### Exercise 2
 
-
 ```mojo
-let math = Python.import_module("math")
+var math = Python.import_module("math")
 
-let pi = math.pi
-print(pi)
+var pi = math.pi
+pi
 ```
 
-    3.141592653589793
-
+```text
+3.141592653589793
+```
 
 ### Exercise 3
 
-
 ```mojo
-let left = Float64(2.0)
-let right = SIMD[DType.float64, 1](2.0)
+var left = Float64(2.0)
+var right = SIMD[DType.float64, 1](2.0)
 
-print(left * right)
+var res = left * right
+res
 ```
 
-    4.0
-
+```text
+4.0
+```
 
 ### Exercise 4
-
 
 ```mojo
 for i in range(4):
@@ -670,10 +666,9 @@ for i in range(4):
     print(simd)
 ```
 
-    [1, 0, 0, 0]
-    [0, 1, 0, 0]
-    [0, 0, 1, 0]
-    [0, 0, 0, 1]
-
-
-<CommentService />
+```text
+[1, 0, 0, 0]
+[0, 1, 0, 0]
+[0, 0, 1, 0]
+[0, 0, 0, 1]
+```

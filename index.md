@@ -16,7 +16,7 @@ actions:
   - text: Is Mojo For Me?
     link: /is_mojo_for_me
     type: secondary
-footer: MIT Licensed - Unofficial and not affiliated with Modular or Mojo
+footer: MIT Licensed and open source at github.com/mojodojodev/mojodojo.dev. Community site for Mojicians🪄. Domain owned by Modular Inc.
 ---
 
 

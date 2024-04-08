@@ -1,13 +1,12 @@
-import { defaultTheme, defineUserConfig } from 'vuepress'
 import { docsearchPlugin } from '@vuepress/plugin-docsearch';
 import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
-import { feedPlugin } from 'vuepress-plugin-feed2';
+import { feedPlugin } from '@vuepress/plugin-feed';
 import { shikiPlugin } from '@vuepress/plugin-shiki'
 import { gitPlugin } from '@vuepress/plugin-git'
-import { readFileSync } from "fs"
-import codeCopyPlugin from '@snippetors/vuepress-plugin-code-copy'
-import { commentPlugin } from "vuepress-plugin-comment2";
-import { addViteSsrNoExternal } from 'vuepress-shared';
+import { defaultTheme } from '@vuepress/theme-default'
+import { defineUserConfig } from 'vuepress'
+import { viteBundler } from '@vuepress/bundler-vite'
+import { commentPlugin } from "@vuepress/plugin-comment";
 
 const compareDate = (dateA, dateB) => {
     if (!dateA || !(dateA instanceof Date)) return 1;
@@ -16,12 +15,12 @@ const compareDate = (dateA, dateB) => {
     return dateB.getTime() - dateA.getTime();
 };
 
-const mojoGrammar = JSON.parse(readFileSync("./syntax/mojo.tmLanguage.json").toString())
-
 
 export default defineUserConfig({
+
+    bundler: viteBundler(),
     extendsBundlerOptions: (config, app) => {
-        addViteSsrNoExternal(config, app, 'vuepress-shared');
+        // addViteSsrNoExternal(config, app, 'vuepress-shared');
     },
     lang: 'en-US',
     title: 'Mojo Dojo',
@@ -61,86 +60,8 @@ export default defineUserConfig({
                                 text: "Intro to Mojo",
                                 collapsible: true,
                                 children: [
-                                    "/guides/intro-to-mojo/setup",
                                     "/guides/intro-to-mojo/basic-types",
                                 ],
-                            },
-                            {
-                                text: "General",
-                                collapsible: true,
-                                children: [
-                                    '/guides/general/mojo-playground-vscode.md',
-                                ]
-                            },
-                            {
-                                text: "Decorators",
-                                collapsible: true,
-                                children: [
-                                    '/guides/decorators/value.md',
-                                    '/guides/decorators/register_passable.md',
-                                    '/guides/decorators/parameter.md',
-                                    '/guides/decorators/always_inline.md',
-                                    '/guides/decorators/noncapturing.md',
-                                ]
-                            },
-                            {
-                                text: 'Standard Library',
-                                collapsible: true,
-                                children: [
-                                    '/guides/std/Assert.md',
-                                    '/guides/std/Benchmark.md',
-                                    {
-                                        text: 'Buffer',
-                                        collapsible: true,
-                                        children: [
-                                            '/guides/std/Buffer/Buffer.md',
-                                            '/guides/std/Buffer/NDBuffer.md',
-                                        ]
-                                    },
-                                    {
-                                        text: 'Pointer',
-                                        collapsible: true,
-                                        children: [
-                                            '/guides/std/Pointer/DTypePointer.md',
-                                            '/guides/std/Pointer/Pointer.md',
-                                        ]
-                                    },
-                                    '/guides/std/Random.md',
-                                    '/guides/std/Sort.md',
-                                    '/guides/std/String.md',
-                                    '/guides/std/TargetInfo.md',
-                                    '/guides/std/Time.md',
-                                    {
-                                        text: 'Vector',
-                                        collapsible: true,
-                                        children: [
-                                            '/guides/std/Vector/DynamicVector.md',
-                                            '/guides/std/Vector/InlinedFixedVector.md',
-                                            '/guides/std/Vector/UnsafeFixedVector.md',
-                                        ]
-                                    },
-                                ]
-                            },
-                            {
-                                text: 'Builtins',
-                                collapsible: true,
-                                children: [
-                                    '/guides/builtins/Bool.md',
-                                    '/guides/builtins/BuiltinList.md',
-                                    '/guides/builtins/BuiltinSlice.md',
-                                    '/guides/builtins/Error.md',
-                                    '/guides/builtins/FloatLiteral.md',
-                                    '/guides/builtins/StringLiteral.md',
-                                    '/guides/builtins/StringRef.md',
-                                    '/guides/builtins/Tuple.md',
-                                ]
-                            },
-                            {
-                                text: "Benchmarks",
-                                collapsible: true,
-                                children: [
-                                    '/guides/benchmarks/sudoku.md',
-                                ]
                             },
                         ],
                     },
@@ -195,7 +116,6 @@ export default defineUserConfig({
             darkTheme: 'dark_dimmed',
             lightTheme: 'dark_dimmed',
         }),
-        codeCopyPlugin(),
         docsearchPlugin({
             appId: 'WHF26ZE58I',
             indexName: 'mojodojo',
@@ -205,33 +125,8 @@ export default defineUserConfig({
             id: 'G-8B385M142M',
         }),
         shikiPlugin({
-            langs: [
-                {
-                    id: "mojo",
-                    scopeName: 'source.mojo',
-                    grammar: mojoGrammar,
-                    aliases: ["Mojo"],
-                },
-                {
-                    id: "python",
-                    scopeName: 'source.python',
-                    path: "./languages/python.tmLanguage.json",
-                    aliases: ["Python"]
-                },
-                {
-                    id: "output",
-                    scopeName: 'source.python',
-                    path: "./languages/python.tmLanguage.json",
-                    aliases: ["Output"]
-                },
-                {
-                    id: "shell",
-                    scopeName: 'source.shell',
-                    path: "./languages/shellscript.tmLanguage.json",
-                    aliases: ["bash", "Bash"]
-                },
-            ],
-            theme: 'material-default',
+            langs: ["mojo", "python", "shell", "ansi"],
+            theme: 'tokyo-night',
         }),
         feedPlugin({
             rss: true,
