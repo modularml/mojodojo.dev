@@ -1,8 +1,8 @@
 {
-    "name": "mojodojodev.github.io",
+    "name": "modularml.github.io",
     "version": "0.0.1",
-    "repository": "github:mojodojodev/mojodojo.dev",
-    "author": "Mojo Dojo <mojodojodev@gmail.com>",
+    "repository": "github:modularml/mojodojo.dev",
+    "author": "Mojo Dojo <jackos@me.com>",
     "license": "MIT",
     "devDependencies": {
         "@vuepress/plugin-back-to-top": "next",
