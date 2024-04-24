@@ -1,18 +1,20 @@
 ---
 date: 2024-04-24
-author: Mojo Dojo
+author: Jack Clayton
 author_site: https://mojodojo.dev
 author_image: https://mojodojo.dev/flames-high-five.webp
 feed: true
 head:
-  - [meta, { name: twitter:card , content: summary }]
-  - [meta, { name: twitter:site , content: '@mojodojodev' }]
-  - [meta, { name: twitter:title , content: This Week in Mojo }]
-  - [meta, { name: twitter:description , content: "This week in Mojo with language updates, community content, and everything else related to Mojo" }]
-  - [meta, { name: og:description , content: "This week in Mojo with language updates, community content, and everything else related to Mojo" }]
   - [meta, { name: description , content: "This week in Mojo with language updates, community content, and everything else related to Mojo" }]
-  - [meta, { property: twitter:image , content: "https://mojodojo.dev/flames-high-five.webp" }]
+  - [meta, { property: og:title , content: "Modverse Weekly: Issue 31" }]
+  - [meta, { property: og:description , content: "This week in Mojo with language updates, community content, and everything else related to Mojo" }]
   - [meta, { property: og:image , content: "https://mojodojo.dev/flames-high-five.webp" }]
+  - [meta, { name: twitter:title , property: Modverse Weekly: Issue 31 }]
+  - [meta, { property: twitter:description , content: "This week in Mojo with language updates, community content, and everything else related to Mojo" }]
+  - [meta, { property: twitter:image , content: "https://mojodojo.dev/flames-high-five.webp" }]
+  - [meta, { property: og:type , content: "website" }]
+  - [meta, { name: twitter:card , content: "summary_large_image" }]
+  - [meta, { name: twitter:site , content: '@Modular' }]
 ---
 
 # Modverse Weekly Issue 31

@@ -88,6 +88,14 @@ export default defineUserConfig({
                         ]
                     },
                     {
+                        text: 'Modverse Weekly',
+                        link: '/modverse-weekly/',
+                        collapsible: true,
+                        children: [
+                            '/modverse-weekly/issue-31.md',
+                        ]
+                    },
+                    {
                         text: 'Blog',
                         link: '/blog/',
                         collapsible: true,
