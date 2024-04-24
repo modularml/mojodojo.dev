@@ -9,7 +9,7 @@ head:
   - [meta, { property: og:title , content: "Modverse Weekly: Issue 31" }]
   - [meta, { property: og:description , content: "This week in Mojo with language updates, community content, and everything else related to Mojo" }]
   - [meta, { property: og:image , content: "https://mojodojo.dev/flames-high-five.webp" }]
-  - [meta, { name: twitter:title , property: Modverse Weekly: Issue 31 }]
+  - [meta, { name: twitter:title , property: "Modverse Weekly: Issue 31" }]
   - [meta, { property: twitter:description , content: "This week in Mojo with language updates, community content, and everything else related to Mojo" }]
   - [meta, { property: twitter:image , content: "https://mojodojo.dev/flames-high-five.webp" }]
   - [meta, { property: og:type , content: "website" }]
