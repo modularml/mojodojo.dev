@@ -1,7 +1,6 @@
 {
     "name": "modularml.github.io",
-    "version": "0.0.1",
-    "repository": "github:modularml/mojodojo.dev",
+    
     "author": "Mojo Dojo <jackos@me.com>",
     "license": "MIT",
     "devDependencies": {
