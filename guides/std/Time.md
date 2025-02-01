@@ -6,7 +6,7 @@ usage: Measure elapsed time and make a thread sleep
 # Time
 
 
-```mojo
+```mojo :no-line-numbers 
 from Time import now, sleep, time_function
 ```
 
@@ -14,7 +14,7 @@ from Time import now, sleep, time_function
 Gets the current nanoseconds using the systems monotonic clock, which is generally the time elapsed since the machine was booted, but will vary behaviour by platform for states like `sleep` etc.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(now())
 ```
 
@@ -25,7 +25,7 @@ print(now())
 Make a thread sleep for the duration in seconds
 
 
-```mojo
+```mojo :no-line-numbers 
 let tic = now()
 sleep(.001)
 let toc = now() - tic
@@ -40,7 +40,7 @@ print("slept for", toc, "nanoseconds")
 Pass in a nested `fn` a.k.a `closure` that takes no arguments and returns `None` as a parameter, e.g. to time a function named `sleep1ms`:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn sleep1ms():
     sleep(.001)
 

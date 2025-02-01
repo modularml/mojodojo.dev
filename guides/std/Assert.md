@@ -8,14 +8,14 @@ usage: Place constraints on functions that are checked at compile time, and chec
 Asserts that the condition is true in the `parameter / comptime` domain, used to place constraints on functions
 
 
-```mojo
+```mojo :no-line-numbers 
 from Assert import assert_param
 ```
 
 We can put compile time assertions in the ensure that the two numbers passed in are positive
 
 
-```mojo
+```mojo :no-line-numbers 
 fn add_positives[x: Int, y: Int]() -> UInt8:
     assert_param[x > 0]()
     assert_param[y > 0]()
@@ -25,7 +25,7 @@ fn add_positives[x: Int, y: Int]() -> UInt8:
 Let's get the result that's calculated at compile time
 
 
-```mojo
+```mojo :no-line-numbers 
 let res = add_positives[2, 4]()
 print(res)
 ```
@@ -36,7 +36,7 @@ print(res)
 Now we'll introduce the error so you can see how it looks, it will always be at the end of the error message:
 
 
-```mojo
+```mojo :no-line-numbers 
 add_positives[-2, 4]()
 ```
 
@@ -49,7 +49,7 @@ add_positives[-2, 4]()
 You can also add a message to change the compiler error output:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn add_positives[x: Int, y: Int]() -> UInt8:
     assert_param[x > 0, "x is not positve, use a positve number over 0"]()
     assert_param[y > 0, "y is not positve, use a positve number over 0"]()
@@ -69,7 +69,7 @@ print(res)
 Asserts that the condition is true in debug builds, and is removed from the compilation process in release builds
 
 
-```mojo
+```mojo :no-line-numbers 
 from Assert import debug_assert
 
 fn test_debug_assert[x: Int](y: Int):

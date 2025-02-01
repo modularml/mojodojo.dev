@@ -8,7 +8,7 @@ You can decorate a type with `@register_passable` which allows a type to passed 
 Create a type with a pair of `UInt32` and mark it register passable:
 
 
-```mojo
+```mojo :no-line-numbers 
 @register_passable
 struct Pair:
     var a: UInt32
@@ -27,7 +27,7 @@ struct Pair:
 `__init__`, `__copyinit__` and `__del__` aren't required, this is just to indicate what you can define on a `@register_passable` type, for example printing something when the object is dropped:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn test():
     let x = Pair(5, 10)
     var y = x
@@ -49,7 +49,7 @@ test()
 Generally you will also want to mark it with the [@value](/guides/decorators/value) decorator, which implements all the boilerplate for you:
 
 
-```mojo
+```mojo :no-line-numbers 
 @value
 @register_passable
 struct Pair:
@@ -66,7 +66,7 @@ print(x.a, x.b)
 Trying to define `__moveinit__` will result in an error, the whole idea behind `@register_passable` is that you can copy it into or out of a register by copying:
 
 
-```mojo
+```mojo :no-line-numbers 
 @register_passable
 struct Pair:
     var a: Int
@@ -103,7 +103,7 @@ Examples of trivial types:
 - Struct types decorated with `@register_passable("trivial")`, that can only contain other trivial types:
 
 
-```mojo
+```mojo :no-line-numbers 
 @register_passable("trivial")
 struct Pair:
     var a: Int

@@ -13,7 +13,7 @@ Represent a constant reference to a string, i.e. a sequence of characters and a 
 ## init
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = StringRef("a")
 print(x)
 ```
@@ -24,7 +24,7 @@ print(x)
 Or specifying the pointer
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = "string"
 let ptr = x.data()
 let str_ref = StringRef(ptr)
@@ -35,7 +35,7 @@ print(str_ref)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = "string_2"
 let ptr = x.data()
 let length = len(x)
@@ -55,7 +55,7 @@ print(str_ref)
 `length`: The length of the string being referenced.
 
 
-```mojo
+```mojo :no-line-numbers 
 var a : StringRef = StringRef("a")
 print(a.data)
 print(a.length)
@@ -70,7 +70,7 @@ print(a.length)
 Get the string value at the specified position. It receives the index of the character to get. You can use the brackets notation to get the character at the specified position.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = StringRef("hello")
 print(x.__getitem__(0))
 print(x[1])
@@ -85,7 +85,7 @@ print(x[1])
 Compares two strings are equal.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = StringRef("hello")
 var y = StringRef("hello")
 print(x.__eq__(y))
@@ -101,7 +101,7 @@ print(x == y)
 Compares two strings are not equal.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = StringRef("hello")
 var y = StringRef("hello")
 print(x.__ne__(y))
@@ -117,7 +117,7 @@ print(x != y)
 Returns the length of the string.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = StringRef("hello")
 print(x.__len__())
 print(len(x))

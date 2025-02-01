@@ -13,7 +13,7 @@ Tuple literal, consists of zero or more values separated by commas.
 These are the same, as `Tuple` can be elided when using `()` brackets:
 
 
-```mojo
+```mojo :no-line-numbers 
 let t = (1, 2, 3)
 let t = Tuple(1, 2, 3)
 ```
@@ -21,7 +21,7 @@ let t = Tuple(1, 2, 3)
 You can also use different types inside the tuple, and can be implicit or explicit with the types:
 
 
-```mojo
+```mojo :no-line-numbers 
 let u = ("string", 5.0, 2)
 let v: Tuple[StringLiteral, FloatLiteral, Int] = ("string", 5.0, 2)
 ```
@@ -31,7 +31,7 @@ let v: Tuple[StringLiteral, FloatLiteral, Int] = ("string", 5.0, 2)
 Number of elements in the tuple.
 
 
-```mojo
+```mojo :no-line-numbers 
 print("Length of the tuple:", len(t))
 ```
 
@@ -43,7 +43,7 @@ print("Length of the tuple:", len(t))
 Get a specific element in the tuple.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(u.get[1, FloatLiteral]())
 ```
 
@@ -54,7 +54,7 @@ print(u.get[1, FloatLiteral]())
 You can't get items from a tuple if it's not [@register_passable](/guides/decorators/register_passable.md):
 
 
-```mojo
+```mojo :no-line-numbers 
 @value
 struct Coord:
     var x: Int
@@ -79,7 +79,7 @@ print(y.data[0].x)
 To remedy this you can mark it as [@register_passable](/guides/decorators/register_passable.md), but it must contain all register passable types:
 
 
-```mojo
+```mojo :no-line-numbers 
 @value
 @register_passable
 struct Coord:

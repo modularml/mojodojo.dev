@@ -2,7 +2,6 @@ import { docsearchPlugin } from '@vuepress/plugin-docsearch';
 import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
 import { feedPlugin } from '@vuepress/plugin-feed';
 import { shikiPlugin } from '@vuepress/plugin-shiki'
-import { gitPlugin } from '@vuepress/plugin-git'
 import { defaultTheme } from '@vuepress/theme-default'
 import { defineUserConfig } from 'vuepress'
 import { viteBundler } from '@vuepress/bundler-vite'
@@ -25,11 +24,6 @@ export default defineUserConfig({
     title: 'Mojo Dojo',
     description: 'Learning Resources for Mojo 🔥',
     pagePatterns: ['**/*.md', '!**/README.md', '!.vuepress', '!node_modules', '!wip'],
-    markdown: {
-        code: {
-            lineNumbers: false
-        }
-    },
     theme: defaultTheme({
         colorMode: 'dark',
         logo: '/hero.png',
@@ -111,9 +105,6 @@ export default defineUserConfig({
         }
     }),
     plugins: [
-        gitPlugin({
-            contributors: false
-        }),
         commentPlugin({
             provider: "Giscus",
             repo: "modularml/mojodojo.dev",
@@ -134,6 +125,7 @@ export default defineUserConfig({
         shikiPlugin({
             langs: ["mojo", "python", "shell", "ansi"],
             theme: 'tokyo-night',
+            lineNumbers: 'disable',
         }),
         feedPlugin({
             rss: true,

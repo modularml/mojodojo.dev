@@ -6,7 +6,7 @@ usage: Generates initialization, move and copy boilerplate
 Generates boilerplate for a struct, for example on this struct with nothing implemented:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Pair:
     var x: Int
     var y: Int
@@ -15,7 +15,7 @@ struct Pair:
 We can't initialize the struct:
 
 
-```mojo
+```mojo :no-line-numbers 
 let pair = Pair(5, 10)
 ```
 
@@ -28,7 +28,7 @@ let pair = Pair(5, 10)
 Until we implement `__init__`:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Pair:
     var x: Int
     var y: Int
@@ -39,7 +39,7 @@ struct Pair:
 ```
 
 
-```mojo
+```mojo :no-line-numbers 
 let pair = Pair(5, 10)
 print(pair.x)
 ```
@@ -50,7 +50,7 @@ print(pair.x)
 But now we can't copy or move it:
 
 
-```mojo
+```mojo :no-line-numbers 
 let pair2 = pair
 ```
 
@@ -61,7 +61,7 @@ let pair2 = pair
 
 
 
-```mojo
+```mojo :no-line-numbers 
 let pair2 = pair^
 ```
 
@@ -78,7 +78,7 @@ let pair2 = pair^
 Until we implement `__moveinit__` and `__copyinit__`:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Pair:
     var x: Int
     var y: Int
@@ -101,7 +101,7 @@ struct Pair:
 ```
 
 
-```mojo
+```mojo :no-line-numbers 
 let pair = Pair(5, 10)
 
 # Move object
@@ -119,7 +119,7 @@ let pair3 = pair2
 To generate all that boilerplate for our members you can annotate with `@value`:
 
 
-```mojo
+```mojo :no-line-numbers 
 @value
 struct Pair:
     var x: Int
@@ -134,7 +134,7 @@ struct Pair:
 And use it as normal:
 
 
-```mojo
+```mojo :no-line-numbers 
 let pair = Pair(5, 10)
 
 # Move object

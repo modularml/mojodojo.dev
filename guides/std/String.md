@@ -11,7 +11,7 @@ Contributed by [gautam](https://github.com/gautam-e)
 ## Initialization
 
 
-```mojo
+```mojo :no-line-numbers 
 from String import String
 
 var s = String("abcde")
@@ -26,7 +26,7 @@ print(s)
 Loop through the string and print each item
 
 
-```mojo
+```mojo :no-line-numbers 
 for i in range(len(s)):
     print(s[i])
 ```
@@ -41,7 +41,7 @@ for i in range(len(s)):
 Both slicing and indexing are on bytes, not characters, for example an emoji is 4 bytes so you need to use this slice of 4 bytes to print the character:
 
 
-```mojo
+```mojo :no-line-numbers 
 var utf8 = String("mojo🔥")
 print(utf8[4:8])
 ```
@@ -56,7 +56,7 @@ Print part of the string sting using a slice
 Slice from 2 up to 4 non-inclusive:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(s[2:4]) 
 ```
 
@@ -66,7 +66,7 @@ print(s[2:4])
 Slice all characters starting from 1:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(s[1:]) 
 ```
 
@@ -76,7 +76,7 @@ print(s[1:])
 Slice all characters up to the second last:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(s[:-1]) 
 ```
 
@@ -86,7 +86,7 @@ print(s[:-1])
 Only get every second item after the start position:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(s[::2]) 
 ```
 
@@ -97,7 +97,7 @@ print(s[::2])
 Returns a new string by copying memory
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = String("Left")
 let y = String("Right")
 
@@ -114,14 +114,14 @@ print(c)
 ## Join
 
 
-```mojo
+```mojo :no-line-numbers 
 var j = String("🔥")
 ```
 
 The `join` function has a similar syntax to Python's `join`. You can join elements using the current string as a delimiter.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(j.join('a', 'b'))
 print(j.join(40, 2))
 ```
@@ -133,7 +133,7 @@ print(j.join(40, 2))
 You can also use it to join elements of a StaticIntTuple.
 
 
-```mojo
+```mojo :no-line-numbers 
 from Index import StaticIntTuple
 
 var sit = StaticIntTuple[3](1,2,3)
@@ -147,7 +147,7 @@ print(j.join(sit))
 The term comes from the C stdlib for `ASCII to long-integer`, it converts a string to an `Int` (currently just works with base-10 / decimal):
 
 
-```mojo
+```mojo :no-line-numbers 
 from String import atol
 
 var n = atol("19")
@@ -160,7 +160,7 @@ print(n)
 This will throw an error because there's a character that's not a digit:
 
 
-```mojo
+```mojo :no-line-numbers 
 var e = atol("hi")
 print(e)
 ```
@@ -172,7 +172,7 @@ print(e)
 Use chr to convert an integer between 0 and 255 to a string containing the single character
 
 
-```mojo
+```mojo :no-line-numbers 
 from String import chr
 
 print(chr(97))
@@ -185,7 +185,7 @@ print(chr(97))
 Stands for `ordinal` which means the position of the character in ASCII
 
 
-```mojo
+```mojo :no-line-numbers 
 from String import ord
 
 print(ord('a'))
@@ -197,7 +197,7 @@ print(ord('a'))
 Only 1 byte utf8 (ASCII) characters currently work, anything outside will currently wrap:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(ord('🔥'))
 ```
 
@@ -208,7 +208,7 @@ print(ord('🔥'))
 Check if the character passed in is a valid decimal between 0 and 9, which in ASCII is 48 to 57
 
 
-```mojo
+```mojo :no-line-numbers 
 from String import isdigit
 
 print(isdigit(ord('8')))
@@ -226,7 +226,7 @@ print(isdigit(ord('a')))
 In Mojo a string is backed by a `DynamicVector[Int8]`, which you can access via the `buffer` member variable:
 
 
-```mojo
+```mojo :no-line-numbers 
 let buffer = String("mojo").buffer
 print(buffer.capacity)
 ```
@@ -237,7 +237,7 @@ print(buffer.capacity)
 Force an error so Mojo shows us the type:
 
 
-```mojo
+```mojo :no-line-numbers 
 buffer = ""
 ```
 
@@ -250,7 +250,7 @@ buffer = ""
 ### From `DynamicVector[Int8]`
 
 
-```mojo
+```mojo :no-line-numbers 
 from Vector import DynamicVector
 
 var x = DynamicVector[Int8](4)

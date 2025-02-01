@@ -9,7 +9,7 @@ Contributed by [Alex1957](https://github.com/Alex19578)
 ## import
 
 
-```mojo
+```mojo :no-line-numbers 
 from Vector import InlinedFixedVector
 ```
 
@@ -20,7 +20,7 @@ You can reserve memory to add elements without the cost of copying everything if
 Statically allocate 4 elements, and reserve a capacity of 8 elements
 
 
-```mojo
+```mojo :no-line-numbers 
 var vec = InlinedFixedVector[4, Int](8)
 ```
 
@@ -28,7 +28,7 @@ var vec = InlinedFixedVector[4, Int](8)
 To add elements to the vector, you can use the `append` method:
 
 
-```mojo
+```mojo :no-line-numbers 
 vec.append(10)
 vec.append(20)
 
@@ -41,7 +41,7 @@ print(len(vec))
 ## variables
 
 
-```mojo
+```mojo :no-line-numbers 
 print(vec.capacity)
 print(vec.current_size)
 print(vec.dynamic_data[0])
@@ -62,7 +62,7 @@ No bounds checking, can access garbage data
 :::
 
 
-```mojo
+```mojo :no-line-numbers 
 print(vec[0])
 ```
 
@@ -70,7 +70,7 @@ print(vec[0])
 
 
 
-```mojo
+```mojo :no-line-numbers 
 vec[1] = 42
 print(vec[1])
 ```
@@ -83,7 +83,7 @@ Setting elements this way won't increase the `len` so may lead to errors, you sh
 :::
 
 
-```mojo
+```mojo :no-line-numbers 
 print(len(vec))
 vec[6] = 10
 print(len(vec))
@@ -98,14 +98,14 @@ print(len(vec))
 This will result in a shallow copy, it'll be a pointer to the same location in memory:
 
 
-```mojo
+```mojo :no-line-numbers 
 var vec2 = vec
 ```
 
 If we modify `vec` then `vec2` will also be updated:
 
 
-```mojo
+```mojo :no-line-numbers 
 vec[0] = 99
 print(vec2[0])
 ```
@@ -116,14 +116,14 @@ print(vec2[0])
 Use deep copy to copy all the data to a different location in memory so it's independent from the original:
 
 
-```mojo
+```mojo :no-line-numbers 
 var vec3 = vec.deepcopy()
 ```
 
 Modifying the original now won't effect the new copy:
 
 
-```mojo
+```mojo :no-line-numbers 
 vec[1] = 100
 print(vec3[1])
 ```
@@ -135,7 +135,7 @@ print(vec3[1])
 Deallocates the data in the vector
 
 
-```mojo
+```mojo :no-line-numbers 
 vec.clear()
 print(vec[1])
 ```

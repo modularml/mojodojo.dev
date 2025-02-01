@@ -16,7 +16,7 @@ We are able to initialize empty errors, with custom messages and even with strin
 
 
 
-```mojo
+```mojo :no-line-numbers 
 var err : Error = Error()
 raise err
 ```
@@ -31,7 +31,7 @@ raise err
 
 
 
-```mojo
+```mojo :no-line-numbers 
 var custom_err : Error = Error("my custom error")
 raise custom_err
 ```
@@ -46,7 +46,7 @@ raise custom_err
 
 
 
-```mojo
+```mojo :no-line-numbers 
 var ref : StringRef = StringRef("hello")
 var err : Error = Error(ref)
 
@@ -67,7 +67,7 @@ raise err
 - `value`: The error message.
 
 
-```mojo
+```mojo :no-line-numbers 
 var err : Error = Error("something is wrong")
 print(err.value)
 ```
@@ -80,7 +80,7 @@ print(err.value)
 Allows error to be copied.
 
 
-```mojo
+```mojo :no-line-numbers 
 var err : Error = Error("hey")
 var other : Error = err
 

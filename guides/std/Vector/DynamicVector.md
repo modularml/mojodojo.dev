@@ -10,7 +10,7 @@ Contributed by [Alex1957](https://github.com/Alex19578)
 ## import
 
 
-```mojo
+```mojo :no-line-numbers 
 from Vector import DynamicVector
 ```
 
@@ -21,7 +21,7 @@ You can reserve memory to add elements without the cost of copying everything if
 Reserve 8 elements worth of memory:
 
 
-```mojo
+```mojo :no-line-numbers 
 var vec = DynamicVector[Int](8)
 ```
 
@@ -29,7 +29,7 @@ var vec = DynamicVector[Int](8)
 To add elements to the vector, you can use the `push_back` method:
 
 
-```mojo
+```mojo :no-line-numbers 
 vec.push_back(10)
 vec.push_back(20)
 
@@ -42,7 +42,7 @@ print(len(vec))
 ## variables
 
 
-```mojo
+```mojo :no-line-numbers 
 print(vec.capacity)
 print(vec.data[0])
 print(vec.size)
@@ -61,7 +61,7 @@ No bounds checking, can access garbage data
 :::
 
 
-```mojo
+```mojo :no-line-numbers 
 print(vec[0])
 ```
 
@@ -69,7 +69,7 @@ print(vec[0])
 
 
 
-```mojo
+```mojo :no-line-numbers 
 vec[1] = 42
 print(vec[1])
 ```
@@ -82,7 +82,7 @@ Setting elements this way won't increase the `len` so may lead to errors, you sh
 :::
 
 
-```mojo
+```mojo :no-line-numbers 
 print(len(vec))
 vec[6] = 10
 print(len(vec))
@@ -98,14 +98,14 @@ print(len(vec))
 This will result in a shallow copy, it'll be a pointer to the same location in memory:
 
 
-```mojo
+```mojo :no-line-numbers 
 var vec2 = vec
 ```
 
 If we modify `vec` then `vec2` will also be updated:
 
 
-```mojo
+```mojo :no-line-numbers 
 vec[0] = 99
 print(vec2[0])
 ```
@@ -116,14 +116,14 @@ print(vec2[0])
 Use deep copy to copy all the data to a different location in memory so it's independent from the original:
 
 
-```mojo
+```mojo :no-line-numbers 
 var vec3 = vec.deepcopy()
 ```
 
 Modifying the original now won't effect the new copy:
 
 
-```mojo
+```mojo :no-line-numbers 
 vec[1] = 100
 print(vec3[1])
 ```
@@ -140,7 +140,7 @@ This will access garbage data if there are no elements left
 :::
 
 
-```mojo
+```mojo :no-line-numbers 
 print(vec.pop_back())
 ```
 
@@ -151,7 +151,7 @@ print(vec.pop_back())
 If it's greater than the current capacity then data is reallocated and moved:
 
 
-```mojo
+```mojo :no-line-numbers 
 vec.reserve(16)
 print(vec.capacity)
 ```
@@ -163,7 +163,7 @@ print(vec.capacity)
 Discard elements if smaller then current size, add uninitialized data if larger:
 
 
-```mojo
+```mojo :no-line-numbers 
 vec.resize(16)
 print(vec.size)
 ```
@@ -175,7 +175,7 @@ print(vec.size)
 Deallocates the data in the vector
 
 
-```mojo
+```mojo :no-line-numbers 
 vec.clear()
 print(vec[1])
 ```

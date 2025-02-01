@@ -11,7 +11,7 @@ Contributed by [gautam](https://github.com/gautam-e)
 Provides functions for random numbers
 
 
-```mojo
+```mojo :no-line-numbers 
 from Random import rand, randint
 from Pointer import DTypePointer
 from DType import DType
@@ -21,7 +21,7 @@ from Memory import memset_zero
 Let's create a two variables to store new addresses on the heap and allocate space for 8 values, note the different `DType`:
 
 
-```mojo
+```mojo :no-line-numbers 
 var p1 = DTypePointer[DType.uint8].alloc(8)
 var p2 = DTypePointer[DType.float32].alloc(8)
 ```
@@ -29,13 +29,13 @@ var p2 = DTypePointer[DType.float32].alloc(8)
 Zero them to ensure we don't read garbage memory:
 
 
-```mojo
+```mojo :no-line-numbers 
 memset_zero(p1, 8)
 memset_zero(p2, 8)
 ```
 
 
-```mojo
+```mojo :no-line-numbers 
 print('values at p1:', p1.simd_load[8](0))
 print('values at p2:', p2.simd_load[8](0))
 ```
@@ -49,7 +49,7 @@ print('values at p2:', p2.simd_load[8](0))
 Fill with 8 random numbers:
 
 
-```mojo
+```mojo :no-line-numbers 
 
 rand[DType.uint8](p1, 8)
 rand[DType.float32](p2, 8)
@@ -66,7 +66,7 @@ print('values at p2:', p2.simd_load[8](0))
 Fill memory with integer values within a range, e.g. 0 to 10.
 
 
-```mojo
+```mojo :no-line-numbers 
 randint[DType.uint8](p1, 8, 0, 10)
 print(p1.simd_load[8](0))
 ```
@@ -79,7 +79,7 @@ print(p1.simd_load[8](0))
 Returns a single random `Float64` value within a specified range e.g 0.0 to 1.0.
 
 
-```mojo
+```mojo :no-line-numbers 
 from Random import random_float64
 print(random_float64(0.0, 1.0))
 ```
@@ -92,7 +92,7 @@ print(random_float64(0.0, 1.0))
 Returns a single random `Int64` value within a specified range e.g -10 to +10.
 
 
-```mojo
+```mojo :no-line-numbers 
 from Random import random_si64
 print(random_si64(-10, 10))
 ```
@@ -105,7 +105,7 @@ print(random_si64(-10, 10))
 Returns a single random `UInt64` value within a specified range e.g 0 to 10.
 
 
-```mojo
+```mojo :no-line-numbers 
 from Random import random_ui64
 print(random_ui64(0, 10))
 ```

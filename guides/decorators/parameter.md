@@ -9,7 +9,7 @@ usage: Causes the function or if statement to run at compile time
 This will cause the `if` statement to run at compile time, there is no runtime performance cost because the path that doesn't run will be excluded from the final binary:
 
 
-```mojo
+```mojo :no-line-numbers 
 from TargetInfo import os_is_linux
 
 @parameter
@@ -27,7 +27,7 @@ else:
 This will run at compile time, so that you pay no runtime price for anything inside the function:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn add_print[a: Int, b: Int](): 
     @parameter
     fn add[a: Int, b: Int]() -> Int:
@@ -45,7 +45,7 @@ add_print[5, 10]()
 What this essentially translates to is:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn add_print(): 
     let x = 15
     print(x)

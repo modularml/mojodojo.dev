@@ -12,7 +12,7 @@ The primitive Bool scalar value used in Mojo.
 ## init
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = True
 print(x)
 
@@ -28,7 +28,7 @@ print(y)
 `Bool` stores it's data in the member variable `value`:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(my_bool.value)
 ```
 
@@ -39,7 +39,7 @@ print(my_bool.value)
 Flips from `True` to `False` or vice-versa
 
 
-```mojo
+```mojo :no-line-numbers 
 print(True.__invert__())
 print(~False)
 ```
@@ -51,7 +51,7 @@ print(~False)
 ## equal
 
 
-```mojo
+```mojo :no-line-numbers 
 print(True.__eq__(True))
 print(True == False)
 ```
@@ -63,7 +63,7 @@ print(True == False)
 ## not equal
 
 
-```mojo
+```mojo :no-line-numbers 
 print(True.__ne__(True))
 print(True != False)
 ```
@@ -76,7 +76,7 @@ print(True != False)
 True if both values are True
 
 
-```mojo
+```mojo :no-line-numbers 
 print(True.__and__(True))
 print(True & False)
 ```
@@ -89,7 +89,7 @@ print(True & False)
 True if any value is True
 
 
-```mojo
+```mojo :no-line-numbers 
 print(True.__or__(False))
 print(False or False)
 ```
@@ -102,7 +102,7 @@ print(False or False)
 Exclusive or, outputs true if exactly one of two inputs is true
 
 
-```mojo
+```mojo :no-line-numbers 
 print(True.__xor__(True))
 print(True ^ False)
 print(False ^ True)
@@ -122,7 +122,7 @@ Think of the `r` as reversed, for example in `a & b`, if `a` doesn't implement `
 For example create a struct `MyNumber` and implement `__rand__` with a `Bool`:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct MyNumber:
     var value: FloatLiteral
     fn __init__(inout self, num: FloatLiteral):
@@ -138,7 +138,7 @@ struct MyNumber:
 You normally can't compare a `Bool` with a `FloatLiteral`, but now we implemented `__rand__` we can:
 
 
-```mojo
+```mojo :no-line-numbers 
 let my_number = MyNumber(1.0)
 print(True & my_number)
 ```

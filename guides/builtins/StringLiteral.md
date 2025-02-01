@@ -16,7 +16,7 @@ String literals are all null-terminated for compatibility with C APIs, but this 
 ## init
 
 
-```mojo
+```mojo :no-line-numbers 
 var x: StringLiteral = "Literal"
 print(x)
 
@@ -33,7 +33,7 @@ print(y)
 - `value`: The MLIR storage for the string literal, lets force an error to see the type:
 
 
-```mojo
+```mojo :no-line-numbers 
 y.value = 0
 ```
 
@@ -46,7 +46,7 @@ y.value = 0
 You can also print it directly:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(y.value)
 ```
 
@@ -58,7 +58,7 @@ print(y.value)
 Convert the string to a boolean value. True if the string is not empty, false otherwise.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = ""
 print(x.__bool__())
 
@@ -75,7 +75,7 @@ print(y.__bool__())
 Compare the equality of two strings, receiving other StringLiteral as parameter. True if equal.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = "abc"
 var y = "abc"
 var z = "ab"
@@ -95,7 +95,7 @@ print(x == y)
 Compare the inequality of two strings, receiving other StringLiteral as parameter. True if not equal.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = "abc"
 var y = "abc"
 var z = "ab"
@@ -115,7 +115,7 @@ print(x != y)
 Concatenate two StringLiterals.
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = "hello "
 let y = "world"
 
@@ -135,7 +135,7 @@ print(d)
 Return the length of the string.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = "string"
 print(x.__len__())
 print(len(x))
@@ -154,7 +154,7 @@ Get raw pointer to the underlying data.
 So, if you have a StringLiteral object, you can call data() on it to get a pointer to its underlying data. This could be useful if you need to pass the string data to a function that requires a pointer, or if you want to perform low-level operations on the string data.
 
 
-```mojo
+```mojo :no-line-numbers 
 var x = "string"
 var y = x.data()
 x = "alo"

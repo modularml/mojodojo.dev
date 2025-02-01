@@ -8,7 +8,7 @@ Marks a closure as not capturing variables from the outer scope.
 Mojo considers closures capturing by default, even if it's not capturing anything, for example if you don't put the `capturing` keyword after `fn()` you'll get a compiler error:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn outer(f: fn() -> None):
     f()
 
@@ -34,7 +34,7 @@ call_it()
 You can fix it by adding the `capturing` keyword:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn outer(f: fn() capturing -> None):
     f()
 
@@ -53,7 +53,7 @@ call_it()
 Alternatively, because it's not actually capturing any outer values you can annotate with `@noncapturing`:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn outer(f: fn() -> None):
     f()
 
@@ -73,7 +73,7 @@ call_it()
 To give you a sense of what capturing is in a closure, let's take a look:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn outer(f: fn() capturing -> Int):
     print(f())
 

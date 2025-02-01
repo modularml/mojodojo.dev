@@ -6,7 +6,7 @@ Any mutations `in` the function will persist `out` of the function, also known a
 A value that you pass to a function when calling it, or the identifier in the function definition:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn example(argument: Int):
     pass
 ```
@@ -15,7 +15,7 @@ fn example(argument: Int):
 Not to be confused with `argument`, these go in the `[]` brackets in a method or function definition. Everything inside these brackets must be known at compile time:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn example[parameter: Int](argument: Int):
     pass
 ```
@@ -23,7 +23,7 @@ fn example[parameter: Int](argument: Int):
 The `@parameter` decorator over an `if` statement runs during compilation:
 
 
-```mojo
+```mojo :no-line-numbers 
 from TargetInfo import os_is_linux
 @parameter
 if os_is_linux():
@@ -41,7 +41,7 @@ You can decorate a type with `@register_passable` to indicate it's not `memory o
 Create a type with a pair of `UInt3232` and mark it register passable:
 
 
-```mojo
+```mojo :no-line-numbers 
 @register_passable
 struct Pair:
     var a: Int
@@ -57,7 +57,7 @@ struct Pair:
 `__copyinit__` and `__del__` aren't required, this is just to indicate that you can define how it copies if you like, and do something special when the object is dropped:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn test():
     let x = Pair{a: 5, b: 10}
     var y = x
@@ -79,7 +79,7 @@ test()
 Generally you just want to mark it with the [@value](/guides/decorators/value) decorator, which will give you everything you need for `value-semantics`:
 
 
-```mojo
+```mojo :no-line-numbers 
 @value
 @register_passable
 struct Pair:
@@ -96,7 +96,7 @@ print(x.a, x.b)
 Trying to define `__moveinit__` will result in an error, the whole idea behind `register_passable` is that the type is moveable into or out of a register by copying without any indirection:
 
 
-```mojo
+```mojo :no-line-numbers 
 @register_passable
 struct Pair:
     var a: Int
@@ -131,7 +131,7 @@ Examples of trivial types:
 - Struct only trivial types decorated with `@register_passable("trivial")`:
 
 
-```mojo
+```mojo :no-line-numbers 
 @register_passable("trivial")
 struct Pair:
     var a: Int

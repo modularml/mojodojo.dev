@@ -46,7 +46,6 @@ export default {
 }
 .link {
   font-weight: 700;
-  color: #2c3e50;
   &:hover {
     text-decoration: underline;
   }
@@ -60,14 +59,9 @@ export default {
   font-size: 24px;
   padding-top: 0;
 }
-.dark .title a {
-  color: #adb6be;
-}
 .read-more {
   font-weight: 500;
-  border: 1px solid #add571;
   border-radius: 4px;
-  color: #add571;
   font-size: 0.9rem;
   padding: 0.3rem 0.6rem;
   box-shadow: 0 0;

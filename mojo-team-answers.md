@@ -82,7 +82,7 @@ We also support an optional + result type as well for the usecases that benefit 
 
 Mojo doesn't actually have exceptions (stack unwinding, etc). Our error handling is like Rust's error handling, except sugared `fn foo() raises -> Int:` actually returns an `ErrorOr<Int>` type and the parser generates automatic error propagation, etc.
 
-```mojo
+```mojo :no-line-numbers 
 try:
     might_raise()
 except e:
@@ -91,7 +91,7 @@ except e:
 
 is the same as
 
-```mojo
+```mojo :no-line-numbers 
 maybe_err = might_raise()
 if maybe_err.is_error():
     print(maybe_err.get_error())
@@ -387,7 +387,7 @@ alias (regardless of what it is called) is a declaration of a thing. We need spo
 
 Also, "let" values are not aliases. They've very different. A let isn't mutable after it is initialized, which is a flow sensitive property, e.g. this is allowed:
 
-```mojo
+```mojo :no-line-numbers 
 var x : Int 
 if cond:
     x = foo()
@@ -442,7 +442,7 @@ Lower priority, but I think we're likely to explore possibly implementing more f
 
 User defined statement blocks, e.g.:
 
-```python
+```python :no-line-numbers
 parallel_loop(42):
 stuff()
 ```
@@ -608,7 +608,7 @@ A direct conversion should be included in the next Playground release.
 
 This currently doesn't work as it does in Python due to `a` inferring the `int` type and raising an error when changing type:
 
-```python
+```python :no-line-numbers
 a = 9
 print(a)
 a = "Hello"
@@ -728,7 +728,7 @@ These are two loop decorators to tell the compiler to unroll a loop, see [wikipe
 
 Fully unroll the loop's 10 iterations into 10 `do_something` calls and remove the for-loop:
 
-```mojo
+```mojo :no-line-numbers 
 @unroll 
 for i in range(10):
   do_something(i)
@@ -736,7 +736,7 @@ for i in range(10):
 
 Unroll every 2 iterations and loop over 5 times:
 
-```mojo
+```mojo :no-line-numbers 
 @unroll(2)
 for i in range (10):
   do_something(i)

@@ -38,7 +38,7 @@ We'll be taking a png of a fire emoji, manually implementing a box blur in pytho
 
 In Mojo we can use any library from the entire Python ecosystem, so we'll use opencv to get our images into a numpy array and matplotlib to render them:
 
-```python
+```python :no-line-numbers
 import cv2
 import numpy as np
 from matplotlib import colors, pyplot as plt
@@ -59,7 +59,7 @@ There is a image in the same folder as this notebook named `fire.png`:
 
 Using [md-notebook](https://marketplace.visualstudio.com/items?itemName=jackos.md-notebook) you can access all the previous Python cells from Mojo using the `py` module:
 
-```mojo
+```mojo :no-line-numbers 
 img = py.open_img("fire.png")
 # Convert from RGB to BGR to color flame blue
 img = py.cv2.cvtColor(img, py.cv2.COLOR_RGBA2BGRA)
@@ -68,12 +68,12 @@ py.write_img("blue-fire.png", img)
 
 <img src="./blue-fire.png?version=111" alt="drawing" width="200"/>
 
-```python
+```python :no-line-numbers
 img = open_img("fire.png")
 print(img[0, 0, 0:4])
 ```
 
-```text
+```text :no-line-numbers
 [255 255 255 255]
 ```
 
@@ -81,17 +81,17 @@ The format is: [Red, Green, Blue, Alpha] represented by 8bit unsigned integers.
 
 Or a middle pixel with some color:
 
-```python
+```python :no-line-numbers
 print(img[120, 120, 0:4])
 ```
 
-```text
+```text :no-line-numbers
 [ 27 161 252 255]
 ```
 
 Let's try applying a blur using python first:
 
-```python
+```python :no-line-numbers
 def box_blur(image, diameter):
     blurred_image = np.copy(image)
     height, width, _ = image.shape
@@ -120,19 +120,19 @@ write_img("blurred.jpg", blurred)
 
 This is obviously going to be a very slow operation in Python compared to what you can do in a language like C, let's time how long it takes:
 
-```python
+```python :no-line-numbers
 img = open_img("fire.png")
 python_secs = timeit(lambda: box_blur(img, 8), number = 5) / 5
 print(python_secs)
 ```
 
-```text
+```text :no-line-numbers
 0.21889668439980597
 ```
 
 The opencv version of the operation uses C++ and one of a few hardware APIs depending on how it was compiled, taking advantage of vectorization. First lets take a look at the result to make sure it's doing the same thing:
 
-```python
+```python :no-line-numbers
 img = open_img("fire.png")
 img = cv2.filter2D(img, -1, np.ones((8, 8))/64)
 write_img("filter2D.jpg", img)
@@ -140,29 +140,29 @@ write_img("filter2D.jpg", img)
 
 <img src="./filter2D.jpg?version=4" width=200>
 
-```python
+```python :no-line-numbers
 img = open_img("fire.png")
 opencv_secs = timeit(lambda: cv2.filter2D(img, -1, np.ones((8, 8), np.uint8)/64), number=5) / 5
 print("Seconds:", opencv_secs)
 ```
 
-```text
+```text :no-line-numbers
 Seconds: 0.0006133885999588529
 ```
 
 That's giving us a very nice speedup over the Python version using C++:
 
-```python
+```python :no-line-numbers
 print("Speedup:", python_secs / opencv_secs)
 ```
 
-```text
+```text :no-line-numbers
 Speedup: 305.831956407965
 ```
 
 Going to the definition of `filter2D` we find the below code. The `...` means the C++ functions have default values; these are just for type hints in Python. The overload with `UMat` is for when you're using the GPU version of opencv:
 
-```python
+```python :no-line-numbers
 # md-notebook:skip
 @typing.overload
 def filter2D(src: cv2.typing.MatLike, ddepth: int, kernel: cv2.typing.MatLike, dst: cv2.typing.MatLike | None = ..., anchor: cv2.typing.Point = ..., delta: float = ..., borderType: int = ...) -> cv2.typing.MatLike: ...
@@ -193,7 +193,7 @@ The standard library is still being built up for Mojo, so sometimes we need to u
 
 There is nothing in the standard library yet for converting a Python integer representing an address to a Mojo pointer with a given data type, so for now we need to write our own function:
 
-```mojo
+```mojo :no-line-numbers 
 fn numpy_data_pointer(numpy_array: PythonObject) raises -> DTypePointer[DType.uint32]:
     return DTypePointer[DType.uint32](
                 __mlir_op.`pop.index_to_pointer`[
@@ -207,7 +207,7 @@ fn numpy_data_pointer(numpy_array: PythonObject) raises -> DTypePointer[DType.ui
 :::tip
 In the comments below, an AI compiler engineer working on Mojo suggests they'll add a static `from_address` method to make this a lot more simple:
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 let p = DTypePointer[DType.uint32].from_address(arr.__array_interface__['data'][0])
 ```
@@ -218,56 +218,56 @@ You can see `pop` is an MLIR dialect the Modular team have developed; it's not i
 
 Lets go line by line to explain what's happening:
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 fn numpy_array_pointer(numpy_array: PythonObject) raises -> DTypePointer[DType.uint32]:
 ```
 
 `PythonObject` has the same representation in Mojo as it does in Python, see [Intro to Mojo: Basic Types](/guides/intro-to-mojo/basic-types.html) for more details. `raises` means that an error could occur which is always the case when interacting with Python. Here I'm returning a Pointer to a DType of `uint32` so each element represents the RGBA of a single pixel.
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 __mlir_op.`pop.index_to_pointer`[
 ```
 
 This is the operation to convert from an index which is an integer of size that matches your architecture, for example 64bit on an x86-64 machine, to an address that can be used as a pointer.
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 _type:__mlir_type.`!pop.pointer<scalar<ui32>>>`
 ```
 
 This is the type as represented in MLIR, it's 32bits so each element encompasses 4*8bit color channels representing RGBA.
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 SIMD[DType.index,1](numpy_array.__array_interface__['data'][0].__index__()).value
 ```
 
 Let's split the above into three separate parts:
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 numpy_array.__array_interface__['data'][0]
 ```
 
 This is using the Python interpreter to get back the address of where the raw data of the numpy array starts in memory.
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 .__index__()
 ```
 
 This converts it from a PythonObject to a Mojo `Int`
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 SIMD[DType.index,1](...).value
 ```
 
 This gets us back a raw MLIR `scalar<index>` type which can then be converted to a `pointer<scalar<ui32>>>` type via the MLIR operation.
 
-```mojo
+```mojo :no-line-numbers 
 # md-notebook:skip
 return DTypePointer[DType.uint32](...)
 ```
@@ -278,7 +278,7 @@ Finally it's returned as the desired type, which is a Mojo pointer starting at t
 
 Below we're taking advantage of Mojo's builtin SIMD type, we figure out how many 32bit pixels we can operate on at once in the hardwares SIMD register, then for each pixel we accumulate the RGB values in a box around it and apply the average to give the blur effect. For example if our SIMD register is 512bits we can operate on 16 32bit pixels at once:
 
-```mojo
+```mojo :no-line-numbers 
 from memory import memcpy
 from time import now
 from math import clamp
@@ -341,7 +341,7 @@ py.write_img("mojo-blur.png", image)
 ## Vectorize
 You may have noticed a bug: if the image width isn't a multiple of our SIMD register, we'll have some leftover pixels that don't get blurred. Mojo includes a vectorize function because it's such a common requirement to load chunks of data that fit into the SIMD register, and it accounts for any leftovers without us having to calculate that ourselves:
 
-```mojo
+```mojo :no-line-numbers 
 from algorithm import vectorize
 
 fn box_blur_vectorize_mojo[diameter: Int](image: PythonObject) raises:
@@ -380,7 +380,7 @@ fn box_blur_vectorize_mojo[diameter: Int](image: PythonObject) raises:
 
 Now we can use a similar benchmark function as Python to take the average of 5 iterations:
 
-```mojo
+```mojo :no-line-numbers 
 image = py.open_img("fire.png")
 
 var nanos = 0.0
@@ -396,7 +396,7 @@ print("python speedup:", py.python_secs / mojo_secs)
 print("opencv speedup:", py.opencv_secs / mojo_secs)
 ```
 
-```text
+```text :no-line-numbers
 total time: 0.00032285000000000001
 python speedup: 663.2885296575425
 opencv speedup: 1.8979340248172347

@@ -10,7 +10,7 @@ A buffer that doesn't own the underlying memory, it allows you to represent an N
 ## import
 
 
-```mojo
+```mojo :no-line-numbers 
 from DType import DType
 from List import DimList
 from Pointer import DTypePointer
@@ -26,7 +26,7 @@ from Index import StaticIntTuple
 This struct allows you to carry around the pointer that owns the data the NDBuffer is pointing to.
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Tensor[rank: Int, shape: DimList, type: DType]:
     var data: DTypePointer[type]
     var buffer: NDBuffer[rank, shape, type]
@@ -45,7 +45,7 @@ struct Tensor[rank: Int, shape: DimList, type: DType]:
 We can now create a shape statically and store data, but be careful there's no safety checks on our struct yet:
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = Tensor[3, DimList(2, 2, 2), DType.uint8]()
 x.data.simd_store(0, SIMD[DType.uint8, 8](1, 2, 3, 4, 5, 6, 7, 8))
 ```
@@ -53,7 +53,7 @@ x.data.simd_store(0, SIMD[DType.uint8, 8](1, 2, 3, 4, 5, 6, 7, 8))
 Let's try using the buffer now:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.num_elements())
 ```
 
@@ -65,7 +65,7 @@ print(x.buffer.num_elements())
 We can also access elements via it's 3D shape:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer[0, 0, 0])
 ```
 
@@ -75,7 +75,7 @@ print(x.buffer[0, 0, 0])
 Notice incrementing the first dimension will get the 5th item:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer[1, 0, 0])
 ```
 
@@ -85,7 +85,7 @@ print(x.buffer[1, 0, 0])
 And incrementing the 2nd dimension will increment get the 7th:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer[1, 1, 0])
 ```
 
@@ -95,7 +95,7 @@ print(x.buffer[1, 1, 0])
 To set an item we need to use a `StaticIntTuple`
 
 
-```mojo
+```mojo :no-line-numbers 
 x.buffer[StaticIntTuple[3](1, 1, 1)] = 50
 print(x.buffer[1, 1, 1])
 ```
@@ -108,7 +108,7 @@ print(x.buffer[1, 1, 1])
 There are no safety checks on our struct yet so we can access data out of bounds:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer[1, 1, 2])
 ```
 
@@ -118,7 +118,7 @@ print(x.buffer[1, 1, 2])
 This is a big safety concern so let's make our own `__get__` method that enforces bounds checking:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Tensor[rank: Int, shape: DimList, type: DType]:
     var data: DTypePointer[type]
     var buffer: NDBuffer[rank, shape, type]
@@ -139,7 +139,7 @@ struct Tensor[rank: Int, shape: DimList, type: DType]:
 ```
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = Tensor[3, DimList(2, 2, 2), DType.uint64]()
 x.data.simd_store(0, SIMD[DType.uint64, 8](0, 1, 2, 3, 4, 5, 6, 7))
 
@@ -153,7 +153,7 @@ print(x[0, 2, 0])
 This bounds checking isn't optimal because it has a runtime cost, we could create a separate function that checks the shape at compile time:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Tensor[rank: Int, shape: DimList, type: DType]:
     var data: DTypePointer[type]
     var buffer: NDBuffer[rank, shape, type]
@@ -178,13 +178,13 @@ struct Tensor[rank: Int, shape: DimList, type: DType]:
 `get()` Creates a closure named `check_dim` decorated by `@parameter` so it runs at compile time, it's checking that each item in `*idx` is less then the same dimension in the static `shape`. `unroll` is used to run it at compile-time `i` amount of times.
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = Tensor[3, DimList(2, 2, 2), DType.uint64]()
 x.data.simd_store(0, SIMD[DType.uint64, 8](0, 1, 2, 3, 4, 5, 6, 7))
 ```
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.get[1, 1, 2]())
 ```
 
@@ -198,7 +198,7 @@ print(x.get[1, 1, 2]())
 Loads SIMD values from the specified position, e.g.:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.simd_load[4](0, 0, 0))
 print(x.buffer.simd_load[4](1, 0, 0))
 print(x.buffer.simd_load[2](1, 1, 0))
@@ -213,7 +213,7 @@ print(x.buffer.simd_load[2](1, 1, 0))
 Store a SIMD vector at the given ND index, for example here we take the first 4 numbers, multiply them by 8, and store them in the second half of the tensor.
 
 
-```mojo
+```mojo :no-line-numbers 
 x.buffer.simd_store(StaticIntTuple[3](1, 0, 0), x.buffer.simd_load[4]() * 8)
 print(x.buffer.simd_load[8]())
 ```
@@ -224,7 +224,7 @@ print(x.buffer.simd_load[8]())
 ## Fields
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.dynamic_dtype)
 print(x.buffer.dynamic_shape)
 print(x.buffer.dynamic_stride)
@@ -241,7 +241,7 @@ print(x.buffer.is_contiguous)
 The total amount of bytes in the buffer
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.bytecount())
 ```
 
@@ -252,7 +252,7 @@ print(x.buffer.bytecount())
 The dimension at the given index
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.dim[0]())
 ```
 
@@ -263,7 +263,7 @@ print(x.buffer.dim[0]())
 Fills the buffer in chunks of you SIMD register size, but doesn't go out of bounds
 
 
-```mojo
+```mojo :no-line-numbers 
 x.buffer.fill(10)
 print(x.buffer[1, 1, 1])
 ```
@@ -275,7 +275,7 @@ print(x.buffer[1, 1, 1])
 Returns a buffer of 1 dimension
 
 
-```mojo
+```mojo :no-line-numbers 
 var y = x.buffer.flatten()
 print(y[7])
 ```
@@ -287,7 +287,7 @@ print(y[7])
 Get the N-Dimensional Index needed to access the nth item
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.get_nd_index(5))
 ```
 
@@ -298,7 +298,7 @@ print(x.buffer.get_nd_index(5))
 The total amount of dimensions
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.get_rank())
 ```
 
@@ -309,7 +309,7 @@ print(x.buffer.get_rank())
 A tuple indicating dimensions of the buffer.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.get_shape())
 ```
 
@@ -320,7 +320,7 @@ print(x.buffer.get_shape())
 Calculates the total number of elements in the buffer, works the same as `size`
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.num_elements())
 ```
 
@@ -331,7 +331,7 @@ print(x.buffer.num_elements())
 Calculates the total number of elements in the buffer, works the same as `num_elements`
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.size())
 ```
 
@@ -342,7 +342,7 @@ print(x.buffer.size())
 Return a new NDBuffer that is backed by stack allocated data, aligned to the DType
 
 
-```mojo
+```mojo :no-line-numbers 
 let new = x.buffer.stack_allocation()
 
 print(new.size())
@@ -355,7 +355,7 @@ print(new.size())
 The step size of a dimension, e.g. in a `2x2x2` tensor if you increment the first dimension, you'll skip over 4 elements:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.stride(0))
 ```
 
@@ -365,7 +365,7 @@ print(x.buffer.stride(0))
 Lets prove this by seeing how we could access the 4th element:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.buffer.get_nd_index(4))
 ```
 
@@ -376,7 +376,7 @@ print(x.buffer.get_nd_index(4))
 Set all elements to the zero value
 
 
-```mojo
+```mojo :no-line-numbers 
 x.buffer.zero()
 print(x.get[0, 0, 0]())
 ```

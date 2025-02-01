@@ -12,7 +12,7 @@ Floating point literal type.
 ## init
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = 10.0
 print(x)
 ```
@@ -21,7 +21,7 @@ print(x)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 let y: FloatLiteral = 4 # Must state type otherwise it will default to Int
 print(y)
 ```
@@ -34,7 +34,7 @@ print(y)
 Returns true if the value does not equal 0.0
 
 
-```mojo
+```mojo :no-line-numbers 
 if 1.0:
     print("not 0.0")
 
@@ -51,7 +51,7 @@ if not 0.0:
 Returns `FloatLiteral` with a swapped sign.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(-x)
 ```
 
@@ -63,7 +63,7 @@ print(-x)
 Returns true if `lhs` (left hand side) is smaller than `rhs` (right hand side).
 
 
-```mojo
+```mojo :no-line-numbers 
 print(-5.0 < -2.0)
 ```
 
@@ -75,7 +75,7 @@ print(-5.0 < -2.0)
 Returns true if `lhs` is smaller than or equal to the `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(5.0 <= 5.0)
 ```
 
@@ -87,7 +87,7 @@ print(5.0 <= 5.0)
 Returns true if `lhs` is equal to `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(1.0 == 1.0)
 ```
 
@@ -99,7 +99,7 @@ print(1.0 == 1.0)
 Returns true if `lhs` is not equal to `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(1.0 != 2.0)
 ```
 
@@ -111,7 +111,7 @@ print(1.0 != 2.0)
 Returns true if `lhs` is larger than `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(3.0 > 2.0)
 ```
 
@@ -123,7 +123,7 @@ print(3.0 > 2.0)
 Returns true if `lhs` is larger than or equal to `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(2.0 >= 2.0)
 ```
 
@@ -135,7 +135,7 @@ print(2.0 >= 2.0)
 returns `lhs` plus `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(40.0 + 2.0)
 ```
 
@@ -147,7 +147,7 @@ print(40.0 + 2.0)
 returns `lhs` minus `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(2.0 - 44.0)
 ```
 
@@ -159,7 +159,7 @@ print(2.0 - 44.0)
 `mul` return `lhs` multiplied by `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(21.0 * 2.0)
 ```
 
@@ -171,7 +171,7 @@ print(21.0 * 2.0)
 returns `lhs` divided by `rhs`.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(5.0 / 2.0)
 ```
 
@@ -183,7 +183,7 @@ print(5.0 / 2.0)
 Returns `lhs` divided by `rhs` rounded down to the next whole number
 
 
-```mojo
+```mojo :no-line-numbers 
 print(5.0 // 2.0)
 ```
 
@@ -194,7 +194,7 @@ print(5.0 // 2.0)
 Returns the remainder of `lhs` divided by `rhs`
 
 
-```mojo
+```mojo :no-line-numbers 
 print(5.0 % 2.0)
 ```
 
@@ -206,7 +206,7 @@ print(5.0 % 2.0)
 Returns `lhs` raised to the power of `rhs`
 
 
-```mojo
+```mojo :no-line-numbers 
 print(2.0 ** 8.0)
 ```
 
@@ -219,7 +219,7 @@ Think of the `r` as reversed, for example in `a + b`, if `a` doesn't implement `
 For example create a struct `MyNumber` only implementing `__radd__`:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct MyNumber:
     var value: FloatLiteral
 
@@ -232,7 +232,7 @@ struct MyNumber:
 ```
 
 
-```mojo
+```mojo :no-line-numbers 
 let num = MyNumber(40.0)
 print(2.0 + num)
 ```
@@ -246,7 +246,7 @@ print(2.0 + num)
 `i` stands for `in-place`, the `lhs` becomes the result of the operation and a new object is not created.
 
 
-```mojo
+```mojo :no-line-numbers 
 var a = 40.0
 
 a += 2.0
@@ -257,7 +257,7 @@ print(a)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 a -= 10.0
 print(a)
 ```
@@ -266,7 +266,7 @@ print(a)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 a %= 5.0
 print(a)
 ```
@@ -275,7 +275,7 @@ print(a)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 a /= 3.0
 print(a)
 ```
@@ -284,7 +284,7 @@ print(a)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 a *= 20.0
 print(a)
 ```
@@ -293,7 +293,7 @@ print(a)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 a //= 2.0
 print(a)
 ```
@@ -302,7 +302,7 @@ print(a)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 a **= 2.0
 print(a)
 ```

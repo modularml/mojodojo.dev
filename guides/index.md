@@ -23,6 +23,7 @@
 _This guide is in the early stages, feedback welcome [on Github](https://github.com/mojodojodev/mojodojo.dev/discussions/categories/feedback)_
 
 <table>
+  <thead>
   <tr>
     <th>Chapter</th>
     <th>Description</th>
@@ -31,4 +32,5 @@ _This guide is in the early stages, feedback welcome [on Github](https://github.
    <td><a :href="chapter.path">{{ chapter.frontmatter.categories }}</a></td>
    <td style="white-space: pre-wrap;">{{ chapter.frontmatter.usage }}</td>
   </tr>
+  </thead>
 </table>

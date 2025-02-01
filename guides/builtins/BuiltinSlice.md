@@ -16,7 +16,7 @@ Objects of this type are generated when slice syntax `[a:b:c]` is used.
 We can initialize slices by specifying where it should stop. If we don't specify a start, it will default to 0. If we don't specify a step, it will default to 1. The step is the number of elements to skip between each element.
 
 
-```mojo
+```mojo :no-line-numbers 
 from String import String
 
 var x = String("slice it!")

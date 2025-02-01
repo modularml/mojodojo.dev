@@ -9,7 +9,7 @@ usage: Store an address with a given DType, allowing you to allocate, load and m
 ## Import
 
 
-```mojo
+```mojo :no-line-numbers 
 from Pointer import DTypePointer
 
 from DType import DType
@@ -21,7 +21,7 @@ from Memory import memset_zero
 Create two variables to store a new address on the heap and allocate 8 bytes
 
 
-```mojo
+```mojo :no-line-numbers 
 var p1 = DTypePointer[DType.uint8].alloc(8)
 var p2 = DTypePointer[DType.uint8].alloc(8)
 ```
@@ -30,7 +30,7 @@ var p2 = DTypePointer[DType.uint8].alloc(8)
 Perform operations with the two pointers
 
 
-```mojo
+```mojo :no-line-numbers 
 if p1:
     print("p1 is not null")
 print("p1 is at a lower address than p2:", p1 < p2)
@@ -48,7 +48,7 @@ print("p1 and p2 are not equal:", p1 != p2)
 First zero all the values for this exercise to make it clear what's happening. 
 
 
-```mojo
+```mojo :no-line-numbers 
 memset_zero(p1, 8)
 ```
 
@@ -57,7 +57,7 @@ this zeroes 8 bytes as `p1` a pointer of type `UInt8`, if it was `UInt16` it wou
 Grab the 8 values and print them:
 
 
-```mojo
+```mojo :no-line-numbers 
 var all_data = p1.simd_load[8](0)
 print(all_data)
 ```
@@ -68,7 +68,7 @@ print(all_data)
 Store some random data in only half of the 8 bytes:
 
 
-```mojo
+```mojo :no-line-numbers 
 rand(p1, 4)
 print(all_data)
 ```
@@ -81,7 +81,7 @@ Take note that the `all_data` variable does not contain a reference to the heap,
 We need to load the data from the heap to see what's now at the address:
 
 
-```mojo
+```mojo :no-line-numbers 
 all_data = p1.simd_load[8](0)
 print(all_data)
 ```
@@ -92,7 +92,7 @@ print(all_data)
 Now lets grab the first half, add 1 to the first 4 bytes with a single instruction SIMD (Single Instruction, Multiple Data) and store it in the second half
 
 
-```mojo
+```mojo :no-line-numbers 
 var half = p1.simd_load[4](0)
 half = half + 1
 p1.simd_store[4](4, half)
@@ -101,7 +101,7 @@ p1.simd_store[4](4, half)
 Load the data again and print it
 
 
-```mojo
+```mojo :no-line-numbers 
 all_data = p1.simd_load[8](0)
 print(all_data)
 ```
@@ -115,7 +115,7 @@ You're now taking advantage of the hardware by using specialized instructions to
 Lets use the same data from the SIMD operators, and shift the pointer address up by 1 byte
 
 
-```mojo
+```mojo :no-line-numbers 
 p1 += 1
 all_data = p1.simd_load[8](0)
 print(all_data)
@@ -129,7 +129,7 @@ You can see we're now starting from the 2nd byte, and we have a garbage value at
 Lets move back to where we were:
 
 
-```mojo
+```mojo :no-line-numbers 
 p1 -= 1
 all_data = p1.simd_load[8](0)
 print(all_data)
@@ -142,14 +142,14 @@ print(all_data)
 If we don't free the memory, the operating system won't be able to reclaim it, this is one way memory leaks are created.
 
 
-```mojo
+```mojo :no-line-numbers 
 p1.free()
 ```
 
 We can introduce a security vulnerability by using the pointer after free and accessing the garbage data that's not allocated, don't do this!
 
 
-```mojo
+```mojo :no-line-numbers 
 all_data = p1.simd_load[8](0)
 print(all_data)
 ```
@@ -161,7 +161,7 @@ print(all_data)
 Playing with pointers is dangerous! Lets build a safe `struct` abstraction around it that interacts with the pointer, so we have less surface area for potential mistakes.
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Matrix:
     var data: DTypePointer[DType.uint8]
 
@@ -191,7 +191,7 @@ struct Matrix:
 Initializing the matrix will set all the values to 0, please take note that the `matrix` identifier is immutable with `let`, but we're still able to modify the data because the `data` member is `var`
 
 
-```mojo
+```mojo :no-line-numbers 
 let matrix = Matrix()
 matrix.print_all()
 ```
@@ -210,7 +210,7 @@ matrix.print_all()
 We can loop through and set the values, one row at a time with SIMD using the abstraction we built
 
 
-```mojo
+```mojo :no-line-numbers 
 for i in range(8):
     matrix[i] = i
 
@@ -231,7 +231,7 @@ matrix.print_all()
 Because it's returning a `SIMD[DType.u8, 8]`, we can also modify the column value using `__setitem__` from the SIMD implementation
 
 
-```mojo
+```mojo :no-line-numbers 
 for i in range(8):
     matrix[i][0] = 9
     matrix[i][7] = 9
@@ -253,7 +253,7 @@ matrix.print_all()
 For one more example lets try grabbing the fourth row, doubling it, and then writing that to the first row
 
 
-```mojo
+```mojo :no-line-numbers 
 var fourth_row = matrix[3]
 print("\nforth row:", fourth_row)
 fourth_row *= 2

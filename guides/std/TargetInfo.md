@@ -7,7 +7,7 @@ usage: Functions related to determining host info such as OS, CPU, width etc.
 ## Width, Alignment and Size
 
 
-```mojo
+```mojo :no-line-numbers 
 from TargetInfo import (
     alignof,
     bitwidthof,
@@ -25,7 +25,7 @@ from DType import DType
 You can check the alignment of a type, in the struct below it returns 4 bytes:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Foo:
     var a: UInt8
     var b: UInt32
@@ -41,7 +41,7 @@ This means each instance of `Foo` will start at a memory address that is a multi
 You can use this for anything falling under an `AnyType`:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(alignof[UInt64]())
 ```
 
@@ -53,7 +53,7 @@ print(alignof[UInt64]())
 The same as [alignof](#alignof) above, but uses bits instead of bytes:
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Foo:
     var a: UInt8
     var b: UInt32
@@ -71,7 +71,7 @@ There will be 24 bits of padding for this type as each object can only be placed
 How many of the type can fit into the targets SIMD register, e.g. to see how many uint64's can be processed with a single instruction:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(simdwidthof[DType.uint64]())
 ```
 
@@ -82,7 +82,7 @@ print(simdwidthof[DType.uint64]())
 The total amount of bits that can be processed at the same time on the host systems SIMD register
 
 
-```mojo
+```mojo :no-line-numbers 
 print(simdbitwidth())
 ```
 
@@ -96,7 +96,7 @@ Take note how the result of `dtype_simd_width[DType.uint64]()` shows you how man
 The total amount of bytes that can be processed at the same time on the host systems SIMD register
 
 
-```mojo
+```mojo :no-line-numbers 
 print(simd_byte_width())
 ```
 
@@ -107,7 +107,7 @@ print(simd_byte_width())
 The total size in bytes of an `AnyType`
 
 
-```mojo
+```mojo :no-line-numbers 
 print(sizeof[UInt8]())
 ```
 
@@ -117,7 +117,7 @@ print(sizeof[UInt8]())
 ## OS
 
 
-```mojo
+```mojo :no-line-numbers 
 from TargetInfo import os_is_linux, os_is_macos, os_is_windows
 ```
 
@@ -126,7 +126,7 @@ from TargetInfo import os_is_linux, os_is_macos, os_is_windows
 Example of conditional compilation based on the operating system:
 
 
-```mojo
+```mojo :no-line-numbers 
 @parameter
 if os_is_linux():
     print("this will be included in the binary")
@@ -140,7 +140,7 @@ else:
 ### os_is_macos
 
 
-```mojo
+```mojo :no-line-numbers 
 print(os_is_macos())
 ```
 
@@ -150,7 +150,7 @@ print(os_is_macos())
 ### os_is_windows
 
 
-```mojo
+```mojo :no-line-numbers 
 print(os_is_windows())
 ```
 
@@ -160,7 +160,7 @@ print(os_is_windows())
 ## Arch
 
 
-```mojo
+```mojo :no-line-numbers 
 from TargetInfo import (
     has_avx,
     has_avx2,
@@ -176,7 +176,7 @@ from TargetInfo import (
 [Advanced Vector Extensions](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions) are instructions for x86 SIMD support, they are commonly used in Intel and AMD chips, the first version of AVX first began shipping in 2011.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(has_avx())
 ```
 
@@ -187,7 +187,7 @@ print(has_avx())
 [Advanced Vector Extensions 2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions) are instructions for x86 SIMD support, expanding integer commands to 256 bits, and started shipping in 2013l
 
 
-```mojo
+```mojo :no-line-numbers 
 print(has_avx2())
 ```
 
@@ -198,7 +198,7 @@ print(has_avx2())
 [Advanced Vector Extensions 512](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions) added 512 bit support for x86 SIMD instructions, and began shipping in 2016.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(has_avx512f())
 ```
 
@@ -210,7 +210,7 @@ print(has_avx512f())
 [AMX](https://en.wikipedia.org/wiki/Advanced_Matrix_Extensions) is an extension to x86 with instructions for special units designed for ML workloads such as TMUL which is a matrix multiply on BF16, it began shipping in 2023.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(has_intel_amx())
 ```
 
@@ -222,7 +222,7 @@ print(has_intel_amx())
 [Neon](https://en.wikipedia.org/wiki/ARM_architecture_family#Advanced_SIMD_(Neon)) also known as Advanced SIMD is an ARM extension for specialized instructions.
 
 
-```mojo
+```mojo :no-line-numbers 
 print(has_neon())
 ```
 
@@ -233,7 +233,7 @@ print(has_neon())
 [SSE4](https://en.wikipedia.org/wiki/SSE4) is the older SIMD instruction extension for x86 processors introduced in the mid 2000's
 
 
-```mojo
+```mojo :no-line-numbers 
 print(has_sse4())
 ```
 
@@ -246,7 +246,7 @@ print(has_sse4())
 The [Apple M1 chip](https://en.wikipedia.org/wiki/Apple_M1) contains a ARM CPU that supports Neon 128 bit instructions and GPU accessible through [metal API](https://developer.apple.com/metal/)
 
 
-```mojo
+```mojo :no-line-numbers 
 print(is_apple_m1())
 ```
 

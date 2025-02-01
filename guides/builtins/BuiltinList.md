@@ -15,7 +15,7 @@ A ListLiteral is a list of elements that are immutable, it only includes getter 
 The types can be implicit:
 
 
-```mojo
+```mojo :no-line-numbers 
 let list = [1,2,3]
 print(list)
 ```
@@ -26,7 +26,7 @@ print(list)
 Or explicit:
 
 
-```mojo
+```mojo :no-line-numbers 
 let explicit_list: ListLiteral[Int, Int, Int] = [1, 2, 3]
 print(explicit_list)
 ```
@@ -37,7 +37,7 @@ print(explicit_list)
 A ListLiteral can also contain elements of different types.
 
 
-```mojo
+```mojo :no-line-numbers 
 let mixed_list= [1, 2.0, True]
 print(mixed_list)
 ```
@@ -49,7 +49,7 @@ print(mixed_list)
 - storage: this is the MLIR type that stores the literals, we'll force an error to see what `mixed_list` storage looks like:
 
 
-```mojo
+```mojo :no-line-numbers 
 mixed_list.storage = 0
 ```
 
@@ -62,7 +62,7 @@ mixed_list.storage = 0
 ## len
 
 
-```mojo
+```mojo :no-line-numbers 
 print(len(mixed_list))
 ```
 
@@ -74,7 +74,7 @@ print(len(mixed_list))
 Get a list element at the given index with the element type, note that we have to specify the index of the element and the type of the element we're retrieving, refer to [parametrization here](https://docs.modular.com/mojo/programming-manual.html#defining-parameterized-types-and-functions)
 
 
-```mojo
+```mojo :no-line-numbers 
 print(mixed_list.get[0, Int]())
 print(mixed_list.get[2, Bool]())
 ```
@@ -84,7 +84,7 @@ print(mixed_list.get[2, Bool]())
 
 
 
-```mojo
+```mojo :no-line-numbers 
 let x = -1
 print(x.__index__())
 ```

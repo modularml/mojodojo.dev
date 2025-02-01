@@ -1,18 +1,18 @@
 {
     "name": "modularml.github.io",
-    
     "author": "Mojo Dojo <jackos@me.com>",
     "license": "MIT",
     "devDependencies": {
+        "@vuepress/bundler-vite": "next",
         "@vuepress/plugin-back-to-top": "next",
+        "@vuepress/plugin-comment": "next",
         "@vuepress/plugin-docsearch": "next",
+        "@vuepress/plugin-feed": "next",
         "@vuepress/plugin-google-analytics": "next",
         "@vuepress/plugin-medium-zoom": "next",
         "@vuepress/plugin-shiki": "next",
         "@vuepress/theme-default": "next",
-        "@vuepress/bundler-vite": "next",
-        "@vuepress/plugin-feed": "next", 
-        "@vuepress/plugin-comment": "next",
+        "sass-embedded": "^1.83.4",
         "vuepress": "next"
     },
     "scripts": {

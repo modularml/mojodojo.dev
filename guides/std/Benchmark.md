@@ -7,7 +7,7 @@ usage: Pass in a closure that returns None as a parameter to benchmark its speed
 ## Import
 
 
-```mojo
+```mojo :no-line-numbers 
 from Benchmark import Benchmark
 ```
 
@@ -16,14 +16,14 @@ from Benchmark import Benchmark
 Loop through each number up to `n` and calculate the total in the fibonacci sequence:
 
 
-```mojo
+```mojo :no-line-numbers 
 alias n = 35 
 ```
 
 Define the recursive version first:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn fib(n: Int) -> Int:
     if n <= 1:
        return n 
@@ -34,7 +34,7 @@ fn fib(n: Int) -> Int:
 To benchmark it, create a nested `fn` that takes no arguments and doesn't return anything, then pass it in as a parameter:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn bench():
     fn closure():
         for i in range(n):
@@ -54,7 +54,7 @@ bench()
 Define iterative version for comparison:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn fib_iterative(n: Int) -> Int:
     var count = 0
     var n1 = 0
@@ -89,7 +89,7 @@ There is a lot going on under the hood, and so you should always test your assum
 Set max iterations and a 1s max total duration
 
 
-```mojo
+```mojo :no-line-numbers 
 from Time import sleep
 
 fn bench_args():
@@ -120,7 +120,7 @@ Note there is some extra logic inside `Benchmark` to help improve accuracy, so h
 Limit the max running time, so it will never run over 0.001 seconds and will not hit the max iters of 5:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn bench_args_2():
     fn sleeper():
         print("sleeping 300,000ns")
@@ -145,7 +145,7 @@ bench_args_2()
 Try with a minimum of 3 million nanoseconds, so it ignores the max iterations and runs 5 normal runs:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn bench_args():
     fn sleeper():
         print("sleeping 300,000ns")
@@ -172,7 +172,7 @@ bench_args()
 You should always have some warmup iterations, there is some extra logic for more accurate results so it won't run exactly what you specify:
 
 
-```mojo
+```mojo :no-line-numbers 
 fn bench_args():
     fn sleeper():
         print("sleeping 300,000ns")

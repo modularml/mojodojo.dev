@@ -9,7 +9,7 @@ usage: The buffer doesn't own the underlying memory, it's a view over data that 
 The buffer doesn't own the underlying memory, it's a view over data that is owned by another object
 
 
-```mojo
+```mojo :no-line-numbers 
 from Buffer import Buffer
 from DType import DType
 from Pointer import DTypePointer
@@ -18,7 +18,7 @@ from Pointer import DTypePointer
 Allocate 8 `uint8` and pass that pointer into the buffer:
 
 
-```mojo
+```mojo :no-line-numbers 
 let p = DTypePointer[DType.uint8].alloc(8)
 let x = Buffer[8, DType.uint8](p)
 ```
@@ -27,7 +27,7 @@ let x = Buffer[8, DType.uint8](p)
 Zero all the valuees to make sure no garbage data is used:
 
 
-```mojo
+```mojo :no-line-numbers 
 x.zero()
 print(x.simd_load[8](0))
 ```
@@ -39,7 +39,7 @@ print(x.simd_load[8](0))
 Loop through and set each item:
 
 
-```mojo
+```mojo :no-line-numbers 
 for i in range(len(x)):
     x[i] = i
 
@@ -54,7 +54,7 @@ print(x.simd_load[8](0))
 Copy the buffer `x` to `y`, change the dynamic size to 4, and multiply all the values by 10
 
 
-```mojo
+```mojo :no-line-numbers 
 var y = x
 y.dynamic_size = 4
 
@@ -65,7 +65,7 @@ for i in range(y.dynamic_size):
 Now print the values from the original buffer `x`, to show they point to the same data:
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.simd_load[8](0))
 ```
 
@@ -76,7 +76,7 @@ print(x.simd_load[8](0))
 Utilize Single Instruction Mutliple Data by manipulating 32 bytes of data at the same time:
 
 
-```mojo
+```mojo :no-line-numbers 
 let first_half = x.simd_load[4](0) * 2
 let second_half = x.simd_load[4](4) * 10
 
@@ -95,7 +95,7 @@ print(x.simd_load[8](0))
 Skips the cache for memory that isn't going to be accessed soon, so if you have a large amount of data it doesn't fill up the cache and block something else that would benefit from quick access.
 
 
-```mojo
+```mojo :no-line-numbers 
 x.simd_nt_store(0, second_half)
 print(x.simd_load[8](0))
 ```
@@ -107,7 +107,7 @@ print(x.simd_load[8](0))
 Store the value in the argument for chunks of the width provided in the parameter
 
 
-```mojo
+```mojo :no-line-numbers 
 x.simd_fill[8](10)
 print(x.simd_load[8](0))
 ```
@@ -119,7 +119,7 @@ print(x.simd_load[8](0))
 Returns a buffer with the data allocated to the stack
 
 
-```mojo
+```mojo :no-line-numbers 
 x.stack_allocation()
 print(x.simd_load[8](0))
 ```
@@ -131,7 +131,7 @@ print(x.simd_load[8](0))
 Count the total bytes
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.bytecount())
 ```
 
@@ -142,7 +142,7 @@ print(x.bytecount())
 Some registers work better with different alignments e.g. AVX-512 performs better with 64 bit alignment, so you might want padding for a type like a UInt32
 
 
-```mojo
+```mojo :no-line-numbers 
 x.aligned_simd_store[8, 8](0, 5)
 ```
 
@@ -150,7 +150,7 @@ x.aligned_simd_store[8, 8](0, 5)
 Some registers work better with different alignments e.g. AVX-512 performs better with 64 bit alignment, so you might want padding for a type like a UInt32
 
 
-```mojo
+```mojo :no-line-numbers 
 print(x.aligned_simd_load[8, 8](0))
 ```
 
@@ -161,7 +161,7 @@ print(x.aligned_simd_load[8, 8](0))
 Allocate to the stack with a given alignment for extra padding
 
 
-```mojo
+```mojo :no-line-numbers 
 x.aligned_stack_allocation[8]()
 ```
 
@@ -169,7 +169,7 @@ x.aligned_stack_allocation[8]()
 Specifies hows soon until the data will be visited again and how the data will be used, to optimize for the cache
 
 
-```mojo
+```mojo :no-line-numbers 
 from Intrinsics import PrefetchOptions
 x.prefetch[PrefetchOptions().for_read().high_locality()](0)
 ```

@@ -1,4 +1,4 @@
-```python
+```python :no-line-numbers
 %%python
 import cv2 as cv
 import numpy as np
@@ -34,7 +34,7 @@ cv.imwrite("output.jpg", output_image)
 ```
 
 
-```python
+```python :no-line-numbers
 from Buffer import Buffer, NDBuffer
 from DType import DType
 from Index import StaticIntTuple

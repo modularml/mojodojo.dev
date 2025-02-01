@@ -11,7 +11,7 @@ usage: |
 ## Import
 
 
-```mojo
+```mojo :no-line-numbers 
 from Pointer import Pointer
 
 from Memory import memset_zero
@@ -22,14 +22,14 @@ from String import String
 Create a struct and use that as the type for the pointer
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Coord:
     var x: UInt8 
     var y: UInt8
 ```
 
 
-```mojo
+```mojo :no-line-numbers 
 var p1 = Pointer[Coord].alloc(2)
 var p2 = Pointer[Coord].alloc(2)
 ```
@@ -37,7 +37,7 @@ var p2 = Pointer[Coord].alloc(2)
 All the values will be garbage, we need to manually zero them if there is a chance we might read the value before writing it, otherwise it'll be undefined behaviour (UB):
 
 
-```mojo
+```mojo :no-line-numbers 
 memset_zero(p1, 2)
 memset_zero(p2, 2)
 ```
@@ -46,7 +46,7 @@ memset_zero(p2, 2)
 Perform operations with the two pointers
 
 
-```mojo
+```mojo :no-line-numbers 
 if p1:
     print("p1 is not null")
 print("p1 and p2 are equal:", p1 == p2)
@@ -63,7 +63,7 @@ print("p1 and p2 are not equal:", p1 != p2)
 Let's try printing the zeroed value from the first point:
 
 
-```mojo
+```mojo :no-line-numbers 
 let coord = p1[0]
 print(coord.x)
 ```
@@ -81,7 +81,7 @@ print(coord.x)
 Take note of the above error, a `memory-only` type means it can't be passed through registers, we need that behavior to use the `[x]` syntax on a Pointer. Lets redefine it with `@register_passable` annotated: 
 
 
-```mojo
+```mojo :no-line-numbers 
 @register_passable
 struct Coord:
     var x: UInt8 
@@ -91,7 +91,7 @@ struct Coord:
 Now we'll be able to use Python syntax to access objects of type `Coord`:
 
 
-```mojo
+```mojo :no-line-numbers 
 var p1 = Pointer[Coord].alloc(2)
 memset_zero(p1, 2)
 
@@ -107,7 +107,7 @@ print(coord.x)
 Let's try setting the values
 
 
-```mojo
+```mojo :no-line-numbers 
 coord.x = 5
 coord.y = 5
 print(coord.x)
@@ -117,7 +117,7 @@ print(coord.x)
 
 
 
-```mojo
+```mojo :no-line-numbers 
 print(p1[0].x)
 ```
 
@@ -127,7 +127,7 @@ print(p1[0].x)
 Note above that `coord` is an identifier to memory on the stack or in a register, when we try and print `p1[0]` it hasn't been modified. We need to write the data.
 
 
-```mojo
+```mojo :no-line-numbers 
 p1.store(0, coord)
 print(p1[0].x)
 ```
@@ -138,7 +138,7 @@ print(p1[0].x)
 Lets add 5 to it and store it at offset 1
 
 
-```mojo
+```mojo :no-line-numbers 
 coord.x += 5
 coord.y += 5
 
@@ -148,7 +148,7 @@ p1.store(1, coord)
 Now print both the coords:
 
 
-```mojo
+```mojo :no-line-numbers 
 for i in range(2):
     print(p1[i].x)
     print(p1[i].y)
@@ -165,7 +165,7 @@ for i in range(2):
 Now we'll destroy the universe by going outside the bounds we allocated:
 
 
-```mojo
+```mojo :no-line-numbers 
 let third_coord = p1.load(2)
 print(third_coord.x)
 print(third_coord.y)
@@ -180,14 +180,14 @@ These are garbage values, we've done something very dangerous that will cause un
 Let's keep going down this dangerous path:
 
 
-```mojo
+```mojo :no-line-numbers 
 p1 += 2
 ```
 
 Now the pointer is pointer is pointing straight to unallocated garbage data! Let's have a look:
 
 
-```mojo
+```mojo :no-line-numbers 
 for i in range(2):
     print(p1[i].x)
     print(p1[i].y)
@@ -202,7 +202,7 @@ for i in range(2):
 Oh no! Let's move back to where we were and free the memory, if we forget to free the memory that'll cause a memory leak if this code runs a lot:
 
 
-```mojo
+```mojo :no-line-numbers 
 p1 -= 2
 p1.free()
 ```
@@ -212,7 +212,7 @@ p1.free()
 It's easy to make mistakes when playing with pointers, let's create a struct to reduce the surface area of potential errors.
 
 
-```mojo
+```mojo :no-line-numbers 
 struct Coords:
     var data: Pointer[Coord]
     var length: Int
@@ -235,7 +235,7 @@ struct Coords:
 We've added some initial safety, this is the bare minimum but instead of allowing potential undefined behaviour, we're causing the program to throw an error when accessing an index out of bounds:
 
 
-```mojo
+```mojo :no-line-numbers 
 let coords = Coords(5)
 
 print(coords[5].x)

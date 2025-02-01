@@ -10,7 +10,7 @@ Contributed by [gautam](https://github.com/gautam-e)
 Sorts a `DynamicVector[Int]` inplace, in ascending order
 
 
-```mojo
+```mojo :no-line-numbers 
 from Sort import sort
 from Vector import DynamicVector
 

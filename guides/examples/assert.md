@@ -1,4 +1,4 @@
-```mojo
+```mojo :no-line-numbers 
 from Intrinsics import llvm_intrinsic
 
 fn asrt(cond: Bool, msg: StringLiteral):
@@ -19,7 +19,7 @@ asrt(5 == 10, "5 does not equal 10")
 
 
 
-```mojo
+```mojo :no-line-numbers 
 from String import String
 
 let name = "billy"

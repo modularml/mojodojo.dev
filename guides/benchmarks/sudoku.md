@@ -6,7 +6,7 @@ usage: Solving a Sudoku game as fast as possible
 
 Speed Increase: 55x
 
-```python
+```python :no-line-numbers
 def is_valid(board, row, col, num):
     for x in range(9):
         if board[row][x] == num:
@@ -54,7 +54,7 @@ for i in board:
     print(i)
 ```
 
-```text
+```text :no-line-numbers
 Solved: True
 [5, 3, 4, 6, 7, 8, 9, 1, 2]
 [6, 7, 2, 1, 9, 5, 3, 4, 8]
@@ -67,7 +67,7 @@ Solved: True
 [3, 4, 5, 2, 8, 6, 1, 7, 9]
 ```
 
-```python
+```python :no-line-numbers
 from timeit import timeit
 
 board = [
@@ -86,11 +86,11 @@ python_secs = timeit(lambda: solve_sudoku(board), number=2)/2
 print("python seconds:", python_secs)
 ```
 
-```text
+```text :no-line-numbers
 python seconds: 0.00814810299925739
 ```
 
-```mojo
+```mojo :no-line-numbers 
 from python import Python
 from buffer import NDBuffer
 from buffer.list import DimList
@@ -179,7 +179,7 @@ print("Solved:", board.solve())
 board.print_board()
 ```
 
-```text
+```text :no-line-numbers
 Solved: True
 [5, 3, 4, 6, 7, 8, 9, 1, 2]
 [6, 7, 2, 1, 9, 5, 3, 4, 8]
@@ -192,7 +192,7 @@ Solved: True
 [3, 4, 5, 2, 8, 6, 1, 7, 9]
 ```
 
-```mojo
+```mojo :no-line-numbers 
 from benchmark import run
 alias board_size = 9 
 def bench(python_secs: Float64):
@@ -224,7 +224,7 @@ def bench(python_secs: Float64):
 bench(py.python_secs.to_float64())
 ```
 
-```text
+```text :no-line-numbers
 mojo seconds: 0.00033978498435722413
 speedup: 23.130888241969338
 ```
