@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.19" />
+    <style>
+      :root {
+        --vp-c-bg: #fff;
+      }
+
+      [data-theme='dark'] {
+        --vp-c-bg: #1b1b1f;
+      }
+
+      html,
+      body {
+        background-color: var(--vp-c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme')
+      const systemDarkMode =
+        'matchMedia' in window
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : false
+
+      if (userMode === 'light') {
+        document.documentElement.dataset.theme = 'light'
+      } else if (userMode === 'dark' || systemDarkMode) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <link rel="alternate" type="application/atom+xml" href="https://www.mojodojo.dev/atom.xml" title="Mojo Dojo Atom Feed"><link rel="alternate" type="application/json" href="https://www.mojodojo.dev/feed.json" title="Mojo Dojo JSON Feed"><link rel="alternate" type="application/rss+xml" href="https://www.mojodojo.dev/rss.xml" title="Mojo Dojo RSS Feed"><title>Mojo Dojo</title><meta name="description" content="Learning Resources for Mojo 🔥">
+    <link rel="preload" href="/assets/style-DrKcXYbu.css" as="style"><link rel="stylesheet" href="/assets/style-DrKcXYbu.css">
+    <link rel="modulepreload" href="/assets/app-CGzBYgfx.js"><link rel="modulepreload" href="/assets/404.html-BvmU8JUK.js">
+    <link rel="prefetch" href="/assets/definitions.html-DJZ1v8Ai.js" as="script"><link rel="prefetch" href="/assets/index.html-DKdhkBhR.js" as="script"><link rel="prefetch" href="/assets/is-mojo-for-me.html-BKewrYgw.js" as="script"><link rel="prefetch" href="/assets/mojo-team-answers.html-Cw7ooS2X.js" as="script"><link rel="prefetch" href="/assets/2023-05-08-why-use-mojo.html-D302KBsU.js" as="script"><link rel="prefetch" href="/assets/2023-05-22-mojo-first-impressions.html-CMq1Lt83.js" as="script"><link rel="prefetch" href="/assets/2023-07-17-rust-or-mojo-ai.html-B_unOWau.js" as="script"><link rel="prefetch" href="/assets/index.html-CQRDmiXh.js" as="script"><link rel="prefetch" href="/assets/index.html-BI2S4Juz.js" as="script"><link rel="prefetch" href="/assets/31.html-CQ2X5jpz.js" as="script"><link rel="prefetch" href="/assets/index.html-nifAhzA4.js" as="script"><link rel="prefetch" href="/assets/2023-05-12.html-DYQYlfU-.js" as="script"><link rel="prefetch" href="/assets/2023-05-19.html-DGDoiFsT.js" as="script"><link rel="prefetch" href="/assets/2023-05-26.html-uqZg4_ty.js" as="script"><link rel="prefetch" href="/assets/2023-06-02.html-CBiNWqsY.js" as="script"><link rel="prefetch" href="/assets/2023-06-09.html-CiEFCQ0L.js" as="script"><link rel="prefetch" href="/assets/2023-06-16.html-DU5G_cuI.js" as="script"><link rel="prefetch" href="/assets/2023-06-23.html-DT9KcFwB.js" as="script"><link rel="prefetch" href="/assets/2023-06-30.html-sxqrw6Mq.js" as="script"><link rel="prefetch" href="/assets/2023-07-07.html-M8FaJVQh.js" as="script"><link rel="prefetch" href="/assets/2023-07-14.html-BEw64S7a.js" as="script"><link rel="prefetch" href="/assets/2023-07-21.html-DkX8ufFd.js" as="script"><link rel="prefetch" href="/assets/2023-07-28.html-Cn7SO3Xt.js" as="script"><link rel="prefetch" href="/assets/2023-08-04.html-NnrZTZtm.js" as="script"><link rel="prefetch" href="/assets/2023-08-11.html-CX0YA2jE.js" as="script"><link rel="prefetch" href="/assets/2023-08-18.html-D44Wi1hq.js" as="script"><link rel="prefetch" href="/assets/2024-08-24-issue-31.html--DzYtZzm.js" as="script"><link rel="prefetch" href="/assets/index.html-CNlsYNNn.js" as="script"><link rel="prefetch" href="/assets/mojo-team-answers.html-BJFbr-Pw.js" as="script"><link rel="prefetch" href="/assets/sudoku.html-DdQA1xuU.js" as="script"><link rel="prefetch" href="/assets/Bool.html-YiGnPY8r.js" as="script"><link rel="prefetch" href="/assets/BuiltinList.html-Nbgm9His.js" as="script"><link rel="prefetch" href="/assets/BuiltinSlice.html-BDYYzxnY.js" as="script"><link rel="prefetch" href="/assets/Error.html-CRDzxxOV.js" as="script"><link rel="prefetch" href="/assets/FloatLiteral.html-BgEkd1qc.js" as="script"><link rel="prefetch" href="/assets/StringLiteral.html-Dj-Kq3Iq.js" as="script"><link rel="prefetch" href="/assets/StringRef.html-B467rZmk.js" as="script"><link rel="prefetch" href="/assets/Tuple.html-Dxx_Ohth.js" as="script"><link rel="prefetch" href="/assets/always_inline.html-CKfJwaIY.js" as="script"><link rel="prefetch" href="/assets/noncapturing.html-BRJdbzuP.js" as="script"><link rel="prefetch" href="/assets/parameter.html-DihEMtFg.js" as="script"><link rel="prefetch" href="/assets/register_passable.html-CuM3ze7h.js" as="script"><link rel="prefetch" href="/assets/value.html-CqsAJZ1d.js" as="script"><link rel="prefetch" href="/assets/assert.html-CFqyvKA7.js" as="script"><link rel="prefetch" href="/assets/opencv.html-Cl7qDwQz.js" as="script"><link rel="prefetch" href="/assets/basic-types.html-DZh_UH9D.js" as="script"><link rel="prefetch" href="/assets/Assert.html-kFLy4Fdf.js" as="script"><link rel="prefetch" href="/assets/Benchmark.html-BOkCew_x.js" as="script"><link rel="prefetch" href="/assets/Random.html-C1wnFCr-.js" as="script"><link rel="prefetch" href="/assets/Sort.html-yL5DVYou.js" as="script"><link rel="prefetch" href="/assets/String.html-Za-3YUeQ.js" as="script"><link rel="prefetch" href="/assets/TargetInfo.html-ym-nINnL.js" as="script"><link rel="prefetch" href="/assets/Time.html-DJv387NF.js" as="script"><link rel="prefetch" href="/assets/Buffer.html-B4BETilF.js" as="script"><link rel="prefetch" href="/assets/NDBuffer.html-WSv35hAz.js" as="script"><link rel="prefetch" href="/assets/DTypePointer.html-leCiUAEg.js" as="script"><link rel="prefetch" href="/assets/Pointer.html-DfnJa95k.js" as="script"><link rel="prefetch" href="/assets/DynamicVector.html-Bk-mhYVX.js" as="script"><link rel="prefetch" href="/assets/InlinedFixedVector.html-CdC0jsJ1.js" as="script"><link rel="prefetch" href="/assets/UnsafeFixedVector.html-2wPeGLhm.js" as="script"><link rel="prefetch" href="/assets/giscus-_nrdy_5Y.js" as="script"><link rel="prefetch" href="/assets/index-DR-m2fLI.js" as="script"><link rel="prefetch" href="/assets/setupDevtools-7MC2TMWH-b9cK1dOV.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="vp-theme-container" vp-container data-v-a9c14c63><main class="page" data-v-a9c14c63><div vp-content data-v-a9c14c63><h1 data-v-a9c14c63>404</h1><blockquote data-v-a9c14c63>That&#39;s a Four-Oh-Four.</blockquote><a class="route-link" href="/" data-v-a9c14c63>Take me home</a></div></main></div><!--[--><!----><!--]--><!--]--></div>
+    <script type="module" src="/assets/app-CGzBYgfx.js" defer></script>
+  </body>
+</html>
